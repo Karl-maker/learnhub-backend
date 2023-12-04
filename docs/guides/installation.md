@@ -1,54 +1,99 @@
-## Prerequisites
+# LearnHub-Backend
 
-Before you begin, ensure you have the following installed:
+Welcome to LearnHub-Backend, the backend infrastructure for our innovative learning platform.
 
-- Node.js v20.10: We recommend using NVM (Node Version Manager) to manage Node.js versions.
+## Getting Started
 
-## Installing Node.js with NVM
+Below are instructions on how to install your project and get started on contributing. You have many choices to choose from with different pros and cons. My suggestion would be to install Docker on your local machine so that databases and other services needed won't need to be configured and installed seperately.
 
-[NVM](https://github.com/nvm-sh/nvm) (Node Version Manager) is a tool that allows you to easily switch between different Node.js versions. Follow these steps to install Node.js v20.10 using NVM:
+Skip to installing Docker.
 
-1. Install NVM by following the instructions [here](https://github.com/nvm-sh/nvm#installing-and-updating).
-2. Open a new terminal window.
-3. Install Node.js v20.10 by running the following command:
-   ```bash
-   nvm install 20.10
-   ```
-4. Set Node.js v20.10 as the default version:
-   ```bash
-   nvm use 20.10
-   ```
+### Node.js and Package Managers
 
-## Installing Dependencies
+#### [Node.js (NVM)](https://github.com/nvm-sh/nvm)
 
-To install project dependencies, use either Yarn or npm.
+Node Version Manager (NVM) is a tool that allows you to easily switch between different Node.js versions.
 
-### Using Yarn
+##### Install NVM on Windows
 
-[Yarn](https://yarnpkg.com/) is a fast, reliable, and secure dependency manager for Node.js. If you don't have Yarn installed, follow the instructions [here](https://yarnpkg.com/getting-started/install).
+Follow the instructions on the [NVM GitHub page](https://github.com/nvm-sh/nvm#installing-and-updating).
 
-After installing Yarn, navigate to the project root and run:
+##### Install NVM on Linux and macOS
 
-```bash
-yarn install
-```
+Follow the instructions on the [NVM GitHub page](https://github.com/nvm-sh/nvm#install--update-script).
 
-### Using npm
+#### [Node.js](https://nodejs.org/)
 
-[npm](https://www.npmjs.com/) is the default package manager for Node.js. It comes bundled with Node.js. To install project dependencies with npm, run:
+Node.js is a JavaScript runtime that allows you to run JavaScript on the server-side.
+
+##### Install Node.js using NVM
 
 ```bash
-npm install
+nvm install 20.10
+nvm use 20.10
 ```
 
-## Running the Project
+### Package Managers
 
-Once the dependencies are installed, you can start the development server using the following script:
+#### [npm](https://www.npmjs.com/)
+
+npm is the default package manager for Node.js. It is used to install project dependencies.
+
+##### Install npm
+
+npm is included with Node.js. Ensure it's installed by running:
 
 ```bash
-yarn dev
-# or
-npm run dev
+npm -v
 ```
 
-This command will launch the server in development mode, allowing you to work on the LearnHub-Backend.
+#### [Yarn](https://yarnpkg.com/)
+
+Yarn is an alternative package manager for Node.js, known for its speed and reliability.
+
+##### Install Yarn
+
+Follow the instructions on the [Yarn website](https://yarnpkg.com/getting-started/install).
+
+### Docker
+
+#### [Docker](https://www.docker.com/)
+
+Docker is a platform for developing, shipping, and running applications in containers.
+
+##### Install Docker
+
+- [Install Docker on Windows](https://docs.docker.com/desktop/install/windows/)
+- [Install Docker on Linux](https://docs.docker.com/desktop/install/linux/)
+- [Install Docker on macOS](https://docs.docker.com/desktop/install/mac/)
+
+### Running the Backend on Docker
+
+You can run the backend on Docker to ensure consistent environments for all contributors.
+
+#### Build Docker Image
+
+Navigate to the project root and run:
+
+```bash
+docker build -t learnhub-backend:latest -f .docker/Dockerfile .
+```
+
+#### Run with Docker Compose
+
+Docker Compose simplifies multi-container Docker applications. It's configured in `.docker/docker-compose.yml`.
+
+##### Install Docker Compose
+
+Follow the instructions on the [Docker Compose GitHub page](https://docs.docker.com/compose/install/).
+
+##### Run the Backend with Compose
+
+Navigate to the project root and run:
+
+```bash
+docker-compose -f .docker/docker-compose.yml up
+```
+
+This will set up the backend, databases, and any other tools needed.
+

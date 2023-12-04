@@ -19,6 +19,9 @@ learnhub-backend/
 |-- .gitignore
 |-- package.json
 |-- README.md
+|-- .docker/
+|   |-- Dockerfile
+|   |-- docker-compose.yml
 ```
 
 ### `src/`
