@@ -68,8 +68,6 @@ We welcome contributions! If you'd like to contribute to the project, please rev
 
 ## License
 
-# LearnerHub Proprietary License
-
 **Version 1.0, [04/12/2023]**
 
 This software is the property of [Your Company Name]. You may not use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software in any form without the express written permission of [Your Company Name].
