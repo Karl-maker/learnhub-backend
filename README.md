@@ -68,5 +68,14 @@ We welcome contributions! If you'd like to contribute to the project, please rev
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+# LearnerHub Proprietary License
+
+**Version 1.0, [04/12/2023]**
+
+This software is the property of [Your Company Name]. You may not use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software in any form without the express written permission of [Your Company Name].
+
+[Your Company Name] reserves all rights not expressly granted to you in this license.
+
+This software is provided "as is" without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall [Your Company Name] be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
+
 
