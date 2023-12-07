@@ -9,4 +9,6 @@ export type AccountRepositoryType = RepositoryDatabaseBaseType & {
     mobile?: string;
     hash_password: string;
     type: 'student' | 'administrator';
+    deleted?: boolean;
+    deactivated?: boolean;
 }
