@@ -64,7 +64,7 @@ The `README.md` is the main documentation file that provides an overview of the 
 
 ## Contributing
 
-We welcome contributions! If you'd like to contribute to the project, please review our [Contribution Guidelines](CONTRIBUTING.md).
+We welcome contributions! If you'd like to contribute to the project, please review our [Contribution Guidelines](/docs/guides/contribution.md).
 
 ## License
 
