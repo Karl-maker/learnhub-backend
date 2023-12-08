@@ -5,7 +5,7 @@ import { IRepository } from "../../../repositories/base/interface";
  * Interface representing a model abstraction for CRUD operations.
  * @template T - Generic type parameter representing the shape of the data managed by the model.
  */
-export interface IModel<T> {
+export interface IBaseModel<T> {
     // A repository instance that handles data access for the model.
     repository: IRepository<T>;
 

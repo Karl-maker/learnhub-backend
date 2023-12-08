@@ -1,5 +1,5 @@
 import { RepositoryDatabaseBaseType } from "../../repositories/base/interface";
-import { AbstractModel } from "../../models/base/abstract";
+import { AbstractBaseModel } from "../../models/base/abstract";
 import { MockDatabaseRepository } from "../../repositories/base/mock";
 
 // Define the MockType
@@ -14,7 +14,7 @@ class MockRepository extends MockDatabaseRepository<MockType> {
 }
 
 // Mock implementation for AbstractModel with MockType
-class TestModel extends AbstractModel<MockType> {
+class TestModel extends AbstractBaseModel<MockType> {
   constructor() {
     super(new MockRepository([]));
   }

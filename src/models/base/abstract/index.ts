@@ -1,7 +1,7 @@
 import { IRepository } from "../../../repositories/base/interface";
-import { IModel, ModelDeleteByIdResult, ModelDeleteManyResult, ModelDeleteOneResult, ModelFindManyResult, ModelUpdateByIdResult, ModelUpdateManyResult } from "../interface";
+import { IBaseModel, ModelDeleteByIdResult, ModelDeleteManyResult, ModelDeleteOneResult, ModelFindManyResult, ModelUpdateByIdResult, ModelUpdateManyResult } from "../interface";
 
-export abstract class AbstractModel<T> implements IModel<T> {
+export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
     repository: IRepository<T>;
 
     constructor(repository: IRepository<T>) {
