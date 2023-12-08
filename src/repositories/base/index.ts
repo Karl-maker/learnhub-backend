@@ -1,7 +1,7 @@
 import { MockDatabaseRepository } from "./mock";
 
-const repository = {
+const Repository = {
     mock: MockDatabaseRepository
 }
 
-export default repository;
+export default Repository;

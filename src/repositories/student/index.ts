@@ -1,7 +1,9 @@
 import { StudentMockRepository } from "./mock";
 
-export const studentRepository = {
+const StudentRepository = {
     mock: StudentMockRepository
 }
+
+export default StudentRepository;
 
 

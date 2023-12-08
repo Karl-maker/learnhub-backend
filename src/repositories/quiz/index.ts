@@ -1,7 +1,9 @@
-import { StudentDetailMockRepository } from "./mock";
+import { QuizMockRepository } from "./mock";
 
-export const studentDetailRepository = {
-    mock: StudentDetailMockRepository
+const QuizRepository = {
+    mock: QuizMockRepository
 }
+
+export default QuizRepository;
 
 

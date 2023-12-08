@@ -1,3 +1,4 @@
+import AccountRepository from "../../repositories/account";
 import { AccountRepositoryType } from "../../repositories/account/interface";
 import { IAccountRepository } from "../../repositories/account/interface";
 import { AccountMockRepository } from "../../repositories/account/mock";
@@ -24,7 +25,7 @@ describe('AccountMockRepository', () => {
       // Add more mock data as needed
     ];
 
-    accountMockRepository = new AccountMockRepository(mockAccounts);
+    accountMockRepository = new AccountRepository.mock(mockAccounts);
   });
 
   afterEach(() => {
