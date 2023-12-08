@@ -6,6 +6,8 @@ import { promisify } from 'util';
 import { RepositoryFindOptions, RepositoryFindResult, RepositoryUpdateResult, RepositoryDeleteResult } from '../../base/interface';
 
 const writeFileAsync = promisify(fs.writeFile);
+const statAsync = promisify(fs.stat);
+const readdirAsync = promisify(fs.readdir);
 
 class FileSystemBlobRepository implements IBlobRepository {
   private basePath: string;
@@ -15,11 +17,52 @@ class FileSystemBlobRepository implements IBlobRepository {
   }
 
   async find(where: Partial<BlobRepositoryType>, options?: RepositoryFindOptions<BlobRepositoryType>): Promise<RepositoryFindResult<BlobRepositoryType>> {
-    // Implement your find logic here (e.g., reading files in the directory)
-    // You may need to map file system information to BlobRepositoryType properties
+    const files = await readdirAsync(this.basePath);
+
+    const filteredFiles = files.filter((fileName) => {
+      const fileExtension = path.extname(fileName);
+      const fileId = path.basename(fileName, fileExtension);
+
+      for (const key in where) {
+        if (where[key] !== undefined && where[key] !== fileId) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
     const data: BlobRepositoryType[] = [];
-    const amount: number = 0;
-    return { data, amount };
+    const promises: Promise<void>[] = [];
+
+    filteredFiles.forEach((fileName) => {
+      const filePath = path.join(this.basePath, fileName);
+      promises.push(
+        statAsync(filePath)
+          .then((stats) => {
+            const fileExtension = path.extname(fileName);
+            const fileId = path.basename(fileName, fileExtension);
+            const contentType = ''; // You may need to determine content type based on file extension or content inspection
+
+            data.push({
+              id: fileId,
+              v: 1, // Assuming a default version
+              created_at: stats.birthtime,
+              updated_at: stats.mtime,
+              location: filePath,
+              ext: fileExtension,
+              file_name: fileName
+            });
+          })
+          .catch((error) => {
+            // Handle error if unable to get file stats
+          })
+      );
+    });
+
+    await Promise.all(promises);
+
+    return { data, amount: data.length };
   }
 
   async create(data: Partial<BlobRepositoryType>): Promise<BlobRepositoryType> {
@@ -37,7 +80,7 @@ class FileSystemBlobRepository implements IBlobRepository {
       updated_at: new Date(),
       location: filePath, // Adding the location property
       ext: data.ext,
-      v: 0
+      v: 1
     };
 
     return createdData;

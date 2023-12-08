@@ -2,6 +2,7 @@ import { S3 } from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
 import { IBlobRepository, BlobRepositoryType } from '../interface';
 import { RepositoryFindOptions, RepositoryFindResult, RepositoryUpdateResult, RepositoryDeleteResult } from '../../base/interface';
+import path from 'path';
 
 class S3BlobRepository implements IBlobRepository {
   private s3: S3;
@@ -13,11 +14,56 @@ class S3BlobRepository implements IBlobRepository {
   }
 
   async find(where: Partial<BlobRepositoryType>, options?: RepositoryFindOptions<BlobRepositoryType>): Promise<RepositoryFindResult<BlobRepositoryType>> {
-    // Implement your find logic here (e.g., listing objects in the S3 bucket)
-    // You may need to map S3 object metadata to BlobRepositoryType properties
+    const listObjectsParams: S3.Types.ListObjectsRequest = {
+      Bucket: this.bucketName,
+    };
+
+    const s3Objects = await this.s3.listObjectsV2(listObjectsParams).promise();
+
+    const filteredObjects = s3Objects.Contents?.filter((s3Object) => {
+      const objectId = s3Object.Key;
+      for (const key in where) {
+        if (where[key] !== undefined && where[key] !== objectId) {
+          return false;
+        }
+      }
+      return true;
+    });
+
     const data: BlobRepositoryType[] = [];
-    const amount: number = 0;
-    return { data, amount };
+    const promises: Promise<void>[] = [];
+
+    filteredObjects?.forEach((s3Object) => {
+      const getObjectParams: S3.Types.GetObjectRequest = {
+        Bucket: this.bucketName,
+        Key: s3Object.Key || '',
+      };
+
+      promises.push(
+        this.s3.getObject(getObjectParams).promise()
+          .then((objectData) => {
+            const objectId = s3Object.Key;
+            const contentType = objectData.ContentType || ''; // Content type from S3 metadata
+
+            data.push({
+              id: objectId,
+              v: 1, // Assuming a default version
+              created_at: s3Object.LastModified || new Date(),
+              updated_at: s3Object.LastModified || new Date(),
+              location: this.s3.getSignedUrl('getObject', { Bucket: this.bucketName, Key: objectId }), // S3 object URL
+              ext: contentType,
+              file_name: objectId,
+            });
+          })
+          .catch((error) => {
+           
+          })
+      );
+    });
+
+    await Promise.all(promises);
+
+    return { data, amount: data.length };
   }
 
   async create(data: Partial<BlobRepositoryType>): Promise<BlobRepositoryType> {
@@ -41,7 +87,7 @@ class S3BlobRepository implements IBlobRepository {
       updated_at: new Date(),
       location: uploadResponse.Location, // Adding the location property
       ext: data.ext,
-      v: 0
+      v: 1
     };
 
     return createdData;
