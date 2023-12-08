@@ -1,5 +1,5 @@
 /**
- * @desc Interface representing a generic repository for CRUD operations.
+ * @desc Interface representing a generic repository for CRUD operations (document / table).
  * @reponsibility Figuring out how data should be accessed from database.
  */
 
