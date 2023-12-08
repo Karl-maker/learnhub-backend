@@ -1,7 +1,7 @@
-import { IRepository, RepositoryDatabaseBaseType } from "../base/interface";
+import { AuditMockRepository } from "./mock";
 
-export interface IAudit extends IRepository<AuditRepositoryType> {};
-export type AuditRepositoryType = RepositoryDatabaseBaseType & {
-    account_id: string;
-    action: string;
+export const auditRepository = {
+    mock: AuditMockRepository
 }
+
+
