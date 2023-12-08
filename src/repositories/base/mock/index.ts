@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
  * Mock implementation of a generic repository for CRUD operations.
  */
 export abstract class MockDatabaseRepository<T extends RepositoryDatabaseBaseType> implements IRepository<T> {
-  private data: T[];
+  protected data: T[];
 
   constructor(data: T[]) {
     this.data = data;
