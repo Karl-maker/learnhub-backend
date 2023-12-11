@@ -86,6 +86,7 @@ export abstract class MockDatabaseRepository<T extends RepositoryDatabaseBaseTyp
                     return false;  // Exclude items that match the delete criteria
                 }
             }
+            
             return true;  // Include items that do not match the delete criteria
         });
 
