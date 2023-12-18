@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import AccountRepository from "../../repositories/account";
 import { AccountRepositoryType } from "../../repositories/account/interface";
 import { IAccountRepository } from "../../repositories/account/interface";
@@ -10,22 +11,8 @@ describe('AccountMockRepository', () => {
   let accountMockRepository: IAccountRepository;
 
   beforeEach(() => {
-    mockAccounts = [
-      {
-        id: '1',
-        v: 1,
-        created_at: new Date(),
-        updated_at: new Date(),
-        first_name: 'John',
-        last_name: 'Doe',
-        email: 'john.doe@example.com',
-        hash_password: 'hashedPassword',
-        type: 'student',
-      },
-      // Add more mock data as needed
-    ];
-
-    accountMockRepository = new AccountRepository.mock(mockAccounts);
+    const mongoConnection = mongoose.createConnection('mongodb://localhost:27017/your-database-name');
+    accountMockRepository = new AccountRepository.mongo(mongoConnection);
   });
 
   afterEach(() => {
