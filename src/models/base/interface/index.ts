@@ -19,7 +19,7 @@ export interface IBaseModel<T> {
     findOne(where: Partial<T>): Promise<Partial<T>>;
 
     // Method to find multiple data entries based on specified criteria.
-    findMany(where: Partial<T>): Promise<ModelFindManyResult<T>>;
+    findMany(where: Partial<T>, options: FindManyOptions<T>): Promise<ModelFindManyResult<T>>;
 
     // Method to update a data entry by its unique identifier.
     updateById(id: string, update: Partial<T>): Promise<ModelUpdateByIdResult<T>>;
@@ -72,4 +72,17 @@ export type ModelFindManyResult<T> = {
 // Result type for the updateMany method, indicating the number of records mutated.
 export type ModelUpdateManyResult = {
     mutated: number;
+}
+
+export type SortDirection = 'asc' | 'desc';
+
+export type FindManyOptions<T> = {
+      sort: {
+        field: keyof T; 
+        direction: SortDirection;
+      };
+      page: {
+        size: number;
+        number: number;
+      };
 }

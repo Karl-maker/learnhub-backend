@@ -1,5 +1,5 @@
 import { IRepository } from "../../../repositories/base/interface";
-import { IBaseModel, ModelDeleteByIdResult, ModelDeleteManyResult, ModelDeleteOneResult, ModelFindManyResult, ModelUpdateByIdResult, ModelUpdateManyResult } from "../interface";
+import { FindManyOptions, IBaseModel, ModelDeleteByIdResult, ModelDeleteManyResult, ModelDeleteOneResult, ModelFindManyResult, ModelUpdateByIdResult, ModelUpdateManyResult } from "../interface";
 
 export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
     repository: IRepository<T>;
@@ -17,7 +17,7 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
     findOne(where: Partial<T>): Promise<Partial<T>> {
         throw new Error("Method not implemented.");
     }
-    findMany(where: Partial<T>): Promise<ModelFindManyResult<T>> {
+    findMany(where: Partial<T>, options: FindManyOptions<T>): Promise<ModelFindManyResult<T>> {
         throw new Error("Method not implemented.");
     }
     updateById(id: string, update: Partial<T>): Promise<ModelUpdateByIdResult<T>> {
