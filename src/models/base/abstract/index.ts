@@ -1,6 +1,10 @@
 import { IRepository } from "../../../repositories/base/interface";
 import { FindManyOptions, IBaseModel, ModelDeleteByIdResult, ModelDeleteManyResult, ModelDeleteOneResult, ModelFindManyResult, ModelUpdateByIdResult, ModelUpdateManyResult } from "../interface";
 
+/**
+ * @todo complete code
+ */
+
 export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
     repository: IRepository<T>;
 
