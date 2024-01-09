@@ -10,7 +10,7 @@ export interface IBaseModel<T> {
     repository: IRepository<T>;
 
     // Method to create a new data entry.
-    create(data: Partial<T>): Promise<T>;
+    create(data: Partial<T>): Promise<Partial<T>>;
 
     // Method to find a data entry by its unique identifier.
     findById(id: string): Promise<Partial<T>>;

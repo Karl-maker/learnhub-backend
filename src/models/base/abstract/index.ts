@@ -8,7 +8,7 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
         this.repository = repository;
     }
 
-    create(data: Partial<T>): Promise<T> {
+    create(data: Partial<T>): Promise<Partial<T>> {
         throw new Error("Method not implemented.");
     }
     findById(id: string): Promise<Partial<T>> {

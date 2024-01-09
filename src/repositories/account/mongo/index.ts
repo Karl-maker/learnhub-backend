@@ -8,7 +8,7 @@ export class AccountMongoRepository extends Repository.mongo<AccountRepositoryTy
       super(connection.model<AccountRepositoryType & Document>('Account', new Schema({
         first_name: { type: String },
         last_name: { type: String },
-        email: { type: String, required: true },
+        email: { type: String },
         mobile: { type: String },
         hash_password: { type: String },
         type: { type: String },

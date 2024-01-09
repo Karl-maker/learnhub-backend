@@ -26,6 +26,7 @@ export interface IRepository<T> {
      * @returns A promise containing the result of the update operation.
      */
     update(where: Partial<T>, data: Partial<T>): Promise<RepositoryUpdateResult>;
+
   
     /**
      * Delete method to remove data from the repository.
