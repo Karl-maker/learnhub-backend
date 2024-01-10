@@ -3,7 +3,7 @@ import logger from '../../logger';
 
 class MongoDBConnector {
   private static instance: MongoDBConnector;
-  private connection: Connection | null = null;
+  connection: Connection | null = null;
 
   private constructor() {}
 
@@ -14,7 +14,7 @@ class MongoDBConnector {
     return this.instance;
   }
 
-  async connect(databaseUri: string): Promise<void> {
+  async connect(databaseUri: string, options?: mongoose.ConnectOptions): Promise<void> {
     try {
       if (!this.connection) {
         const connection = await mongoose.connect(databaseUri, {

@@ -17,6 +17,7 @@ export default class LocalSignup implements ISignupService<LocalSignupType> {
 
     async signup(data: LocalSignupType): Promise<Partial<AccountRepositoryType>> {
         try {
+
             if(data.email) {
                 const response = await this.accountModel.findMany({
                     email: data.email
@@ -31,7 +32,7 @@ export default class LocalSignup implements ISignupService<LocalSignupType> {
                     }
                 });
 
-                if(response.amount <= 1) {
+                if(response.amount >= 1) {
                     // issue
                     throw new ForbiddenError('email already in use')
                 }
@@ -39,7 +40,7 @@ export default class LocalSignup implements ISignupService<LocalSignupType> {
 
             if(data.mobile) {
                 const response = await this.accountModel.findMany({
-                    email: data.mobile
+                    mobile: data.mobile
                 }, {
                     sort: {
                         field: 'created_at',
@@ -51,7 +52,7 @@ export default class LocalSignup implements ISignupService<LocalSignupType> {
                     }
                 });
 
-                if(response.amount <= 1) {
+                if(response.amount >= 1) {
                     // issue
                     throw new ForbiddenError('mobile number already in use')
                 }
@@ -64,7 +65,7 @@ export default class LocalSignup implements ISignupService<LocalSignupType> {
             }
 
         } catch(err) {
-
+            throw err;
         }
     }
 }

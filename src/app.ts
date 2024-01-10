@@ -1,32 +1,45 @@
-import { Request, Response, NextFunction } from "express";
-import ExpressServer from "./server/express";
-import IServer from "./server/interface";
+import express from "express";
+import ExpressServer from "./server/http";
+import IServer from "./server";
 import MongoDBConnector from "./helpers/db/mongo";
 import logger from "./helpers/logger";
+import config from "./config";
+import AccountController from "./controllers/account";
+import LocalSignup, { LocalSignupType } from "./service/signup/local";
+import AccountModel from "./models/account";
+import { IAccountRepository } from "./repositories/account/interface";
+import errorHandler, { error404 } from "./helpers/error-handler";
+import AccountRepository from "./repositories/account";
 
-const port = 8000;
-const server: IServer = new ExpressServer();
-const mongoConnector = MongoDBConnector.getInstance();
+const app = express();
+const port = config.port;
+const server: IServer = new ExpressServer(app);
+const mongo = MongoDBConnector.getInstance();
+const mongo_db_uri = config.database[config.environment].uri;
 
-// Connect to MongoDB
-mongoConnector.connect('mongodb://localhost:27017/your-database-name')
-  .then(() => {
-    // Middleware to log requests
-    server.use((req: Request, res: Response, next: NextFunction) => {
-      logger.debug(`Middleware Test`, req);
-      next();
+
+(async() => {
+    await mongo.connect(mongo_db_uri, {
+      dbName: config.database[config.environment].name,
+      user: config.database[config.environment].user,
+      pass: config.database[config.environment].password, 
+      retryWrites: true, 
+      w: "majority" 
     });
 
-    // Define routes
-    server.route('get', '/', (req: Request, res: Response, next: NextFunction) => {
-      res.json({
-        message: 'Hello World'
-      });
-    });
+    const accountController = new AccountController();
+    const accountRepository: IAccountRepository = new AccountRepository.mongo(mongo.connection);
+    const accountModel = new AccountModel(accountRepository);
+    const signupService = new LocalSignup(accountModel);
+
+    server.app.use(express.json())
+    server.app.post('/signup', accountController.signup<LocalSignupType>(signupService));
+    server.app.use(error404)
+    server.app.use(errorHandler);
 
     // Start the server
-    server.start(port);
-})
-.catch((error) => {
-    logger.fatal('failed to connect to mongodb:', error);
-});
+    server.start(port, () => {
+      logger.info(`service running on port: ${port}`)
+    });
+
+})();

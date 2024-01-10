@@ -14,7 +14,7 @@ export default class AccountController extends AbstractBaseController<AccountRep
      * @todo add event handler 
      */
 
-    async signup<T>(signupService: ISignupService<T>): Promise<RequestHandler> {
+    signup<T>(signupService: ISignupService<T>): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = req.body as T;

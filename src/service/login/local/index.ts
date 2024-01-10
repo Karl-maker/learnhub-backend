@@ -1,4 +1,6 @@
+import config from "../../../config";
 import AccountModel from "../../../models/account";
+import { AccountRoles } from "../../../repositories/account/interface";
 import UnauthorizedError from "../../../utils/error/unauthorized";
 import { compareHash } from "../../../utils/hash";
 import JWT, { Payload } from "../../../utils/jwt";
@@ -21,7 +23,7 @@ export type RefreshAccountPayload = {
 
 export type AccessAccountPayload = {
     id: string;
-    type: "student" | "administrator";
+    role: AccountRoles;
 }
 
 export default class LocalLogin implements ILoginService<JWTLoginCredentials, JWTLoginResult>  {
@@ -46,15 +48,15 @@ export default class LocalLogin implements ILoginService<JWTLoginCredentials, JW
                 data: {
                     id: user.id
                 },
-                iss: ''
+                iss: config.token.iss
             }
 
             const payloadAccess: Payload<AccessAccountPayload> = {
                 data: {
                     id: user.id,
-                    type: user.type
+                    role: user.type
                 },
-                iss: ''
+                iss: config.token.iss
             }
 
             const access_token = this.jwt.create<RefreshAccountPayload>(payloadRefresh, '1d');
