@@ -1,3 +1,7 @@
+import { AccountEventLoginPayload, AccountEventSignUpPayload, accountEvent } from "../../events/definitions/account";
+import event from "../../helpers/event";
+import { AuthAccountPayload } from "../../middlewares/authenticate/interface";
+import AccountModel from "../../models/account";
 import { AccountRepositoryType } from "../../repositories/account/interface";
 import ILoginService from "../../service/login/interface";
 import ISignupService from "../../service/signup/interface";
@@ -11,14 +15,19 @@ export default class AccountController extends AbstractBaseController<AccountRep
     }
 
     /**
-     * @todo add event handler 
+     * @todo add ip address
      */
 
     signup<T>(signupService: ISignupService<T>): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = req.body as T;
-                await signupService.signup(data);
+                const account = await signupService.signup(data);
+
+                const payload: AccountEventSignUpPayload = {
+                    account
+                }
+                event.publish(accountEvent.topics.AccountSignUp, payload);
                 
                 res.json({
                     message: `Account created`
@@ -31,17 +40,25 @@ export default class AccountController extends AbstractBaseController<AccountRep
     }
 
     /**
-     * @todo add event handler 
+     * @todo add ip address
      */
 
-    async login<T, Y>(loginService: ILoginService<T, Y>): Promise<RequestHandler> {
+    login<T, Y>(loginService: ILoginService<T, Y>): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = req.body as T;
-                const tokens = await loginService.login(data);
+                const result = await loginService.login(data);
+
+                const payload: AccountEventLoginPayload = {
+                    account: {
+                        email: data['email'] || null,
+                        mobile: data['mobile'] || null,
+                    }
+                }
+                event.publish(accountEvent.topics.AccountLogin, payload);
                 
                 res.json({
-                    tokens
+                    tokens: result
                 })
 
             } catch(err) {
@@ -49,4 +66,22 @@ export default class AccountController extends AbstractBaseController<AccountRep
             }
         }
     }
+    current(accountModel: AccountModel): RequestHandler {
+        return async(req: Request, res: Response, next: NextFunction) => {
+            try {
+                const account: AuthAccountPayload | null = req['account'] as AuthAccountPayload || null;
+                const result = await accountModel.findById(account.id);
+
+                delete result.hash_password;
+
+                res.json({
+                    account: result
+                })
+
+            } catch(err) {
+                next(err);
+            }
+        }
+    }
+
 }

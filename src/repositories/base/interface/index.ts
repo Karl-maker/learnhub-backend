@@ -43,7 +43,7 @@ export interface IRepository<T> {
 export type RepositoryFindOptions<T> = {
     sort: {
       direction: 'asc' | 'desc';
-      field: keyof T;
+      field: keyof T | 'created_at';
     };
     pagination: {
       page: number;

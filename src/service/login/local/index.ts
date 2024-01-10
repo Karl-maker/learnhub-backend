@@ -1,6 +1,6 @@
 import config from "../../../config";
 import AccountModel from "../../../models/account";
-import { AccountRoles } from "../../../repositories/account/interface";
+import { AccountRepositoryType, AccountRoles } from "../../../repositories/account/interface";
 import UnauthorizedError from "../../../utils/error/unauthorized";
 import { compareHash } from "../../../utils/hash";
 import JWT, { Payload } from "../../../utils/jwt";
@@ -28,11 +28,13 @@ export type AccessAccountPayload = {
 
 export default class LocalLogin implements ILoginService<JWTLoginCredentials, JWTLoginResult>  {
     accountModel: AccountModel;
-    jwt: JWT;
+    refreshJwt: JWT;
+    accessJwt: JWT;
 
-    constructor(accountModel: AccountModel, jwt: JWT) {
+    constructor(accountModel: AccountModel, accessJwt: JWT, refreshJwt: JWT) {
         this.accountModel = accountModel;
-        this.jwt = jwt;
+        this.accessJwt = accessJwt;
+        this.refreshJwt = refreshJwt;
     }
 
     async login(credential: JWTLoginCredentials): Promise<JWTLoginResult> {
@@ -41,7 +43,7 @@ export default class LocalLogin implements ILoginService<JWTLoginCredentials, JW
                   email: credential.email
             });
 
-            if(!user) throw new UnauthorizedError('Wrong email or password entered');
+            if(!user) throw new UnauthorizedError('entered wrong email or password');
             if(!compareHash(credential.password, user.hash_password)) throw new UnauthorizedError('Wrong email or password entered');
 
             const payloadRefresh: Payload<RefreshAccountPayload> = {
@@ -59,15 +61,15 @@ export default class LocalLogin implements ILoginService<JWTLoginCredentials, JW
                 iss: config.token.iss
             }
 
-            const access_token = this.jwt.create<RefreshAccountPayload>(payloadRefresh, '1d');
-            const refresh_token = this.jwt.create<AccessAccountPayload>(payloadAccess, '30d');
+            const access_token = this.accessJwt.create<RefreshAccountPayload>(payloadRefresh, '1d');
+            const refresh_token = this.refreshJwt.create<AccessAccountPayload>(payloadAccess, '30d');
             
             return {
                 access_token,
                 refresh_token
             }
         } catch(err) {
-
+            throw err;
         }
     }   
 }

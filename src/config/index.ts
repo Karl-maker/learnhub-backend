@@ -24,7 +24,7 @@ export default {
           user: env.MONGO_DB_USER
         },
         test: {
-          uri: env.TEST_MONGO_DB_URL || "",
+          uri: env.TEST_MONGO_DB_URI || "",
           name: env.TEST_MONGO_DB_NAME,
           password: env.TEST_MONGO_DB_PASS,
           user: env.TEST_MONGO_DB_USER
