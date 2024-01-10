@@ -37,7 +37,7 @@ export interface IBaseModel<T> {
     deleteOne(where: Partial<T>): Promise<ModelDeleteOneResult<T>>;
 
     // Method to delete multiple data entries based on specified criteria.
-    deleteMany(where: Partial<T>, update: Partial<T>): Promise<ModelDeleteManyResult>;
+    deleteMany(where: Partial<T>): Promise<ModelDeleteManyResult>;
 }
 
 // Result type for the deleteMany method, indicating the number of records deleted.
@@ -58,10 +58,7 @@ export type ModelDeleteByIdResult<T> = {
 }
 
 // Result type for the deleteOne method, indicating the deleted data, and success status.
-export type ModelDeleteOneResult<T> = ModelDeleteByIdResult<T> & {
-    data: Partial<T>;
-    successful: boolean;
-}
+export type ModelDeleteOneResult<T> = ModelDeleteByIdResult<T>;
 
 // Result type for the findMany method, including retrieved data and the total amount.
 export type ModelFindManyResult<T> = {

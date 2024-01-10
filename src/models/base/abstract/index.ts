@@ -72,7 +72,7 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
     deleteOne(where: Partial<T>): Promise<ModelDeleteOneResult<T>> {
         throw new Error("Method not implemented.");
     }
-    deleteMany(where: Partial<T>, update: Partial<T>): Promise<ModelDeleteManyResult> {
+    deleteMany(where: Partial<T>): Promise<ModelDeleteManyResult> {
         throw new Error("Method not implemented.");
     }
 

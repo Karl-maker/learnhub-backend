@@ -66,6 +66,7 @@ export default class AccountController extends AbstractBaseController<AccountRep
             }
         }
     }
+
     current(accountModel: AccountModel): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
@@ -76,6 +77,40 @@ export default class AccountController extends AbstractBaseController<AccountRep
 
                 res.json({
                     account: result
+                })
+
+            } catch(err) {
+                next(err);
+            }
+        }
+    }
+
+    updateCurrent(accountModel: AccountModel): RequestHandler {
+        return async(req: Request, res: Response, next: NextFunction) => {
+            try {
+                const account: AuthAccountPayload | null = req['account'] as AuthAccountPayload || null;
+                const result = await accountModel.updateById(account.id, req.body);
+
+                res.json({
+                    updatedAccount: result.data,
+                    updated: result.status
+                })
+
+            } catch(err) {
+                next(err);
+            }
+        }
+    }
+
+    deleteCurrent(accountModel: AccountModel): RequestHandler {
+        return async(req: Request, res: Response, next: NextFunction) => {
+            try {
+                const account: AuthAccountPayload | null = req['account'] as AuthAccountPayload || null;
+                const result = await accountModel.deleteById(account.id);
+
+                res.json({
+                    deletedAccount: result.data,
+                    deleted: result.successful
                 })
 
             } catch(err) {
