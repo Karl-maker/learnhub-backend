@@ -2,6 +2,7 @@ import { AccountEventLoginPayload, AccountEventSignUpPayload, accountEvent } fro
 import event from "../../helpers/event";
 import { AuthAccountPayload } from "../../middlewares/authenticate/interface";
 import AccountModel from "../../models/account";
+import { AccountLoginMethodsType } from "../../repositories/account-login/interface";
 import { AccountRepositoryType } from "../../repositories/account/interface";
 import ILoginService from "../../service/login/interface";
 import ISignupService from "../../service/signup/interface";
@@ -43,7 +44,7 @@ export default class AccountController extends AbstractBaseController<AccountRep
      * @todo add ip address
      */
 
-    login<T, Y>(loginService: ILoginService<T, Y>): RequestHandler {
+    login<T, Y>(loginService: ILoginService<T, Y>, method: AccountLoginMethodsType = 'local'): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = req.body as T;
@@ -53,7 +54,8 @@ export default class AccountController extends AbstractBaseController<AccountRep
                     account: {
                         email: data['email'] || null,
                         mobile: data['mobile'] || null,
-                    }
+                    },
+                    method
                 }
                 event.publish(accountEvent.topics.AccountLogin, payload);
                 
@@ -67,7 +69,7 @@ export default class AccountController extends AbstractBaseController<AccountRep
         }
     }
 
-    current(accountModel: AccountModel): RequestHandler {
+    getCurrent(accountModel: AccountModel): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const account: AuthAccountPayload | null = req['account'] as AuthAccountPayload || null;

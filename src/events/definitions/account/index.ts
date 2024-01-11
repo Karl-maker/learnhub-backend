@@ -1,3 +1,4 @@
+import { AccountLoginMethodsType } from "../../../repositories/account-login/interface";
 import { AccountRepositoryType } from "../../../repositories/account/interface";
 
 const topics = {
@@ -16,6 +17,7 @@ export type AccountEventSignUpPayload = {
 
 export type AccountEventLoginPayload = {
     ip?: string;
+    method: AccountLoginMethodsType;
     account: {
         email?: string;
         mobile?: string;

@@ -23,4 +23,4 @@ export type AccountLoginRefreshType = {
     expiration: Date;
 }
 
-export type AccountLoginMethodsType = 'jwt' | 'facebook' | 'google';
+export type AccountLoginMethodsType = 'local' | 'facebook' | 'google';

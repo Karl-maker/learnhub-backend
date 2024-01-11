@@ -31,8 +31,8 @@ const v1 = (server: IServer, mongodb: MongoDBConnector): express.Router => {
 
     server.router.post(`${ROUTE}/signup`, accountController.signup<LocalSignupType>(signupService));
     server.router.post(`${ROUTE}/login`, accountController.login<JWTLoginCredentials, JWTLoginResult>(loginService));
-    
-    server.router.get(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), accountController.current(accountModel));
+
+    server.router.get(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), accountController.getCurrent(accountModel));
     server.router.patch(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), accountController.updateCurrent(accountModel));
     server.router.delete(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), accountController.deleteCurrent(accountModel));
 
