@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
  * Mock implementation of a generic repository for CRUD operations.
  */
 export abstract class MockDatabaseRepository<T extends RepositoryDatabaseBaseType> implements IRepository<T> {
-  private data: T[];
+  protected data: T[];
 
   constructor(data: T[]) {
     this.data = data;
@@ -76,20 +76,23 @@ export abstract class MockDatabaseRepository<T extends RepositoryDatabaseBaseTyp
   }
 
   async delete(where: Partial<T>): Promise<RepositoryDeleteResult> {
-    // Mock implementation for the delete method
-    const initialLength = this.data.length;
-    this.data = this.data.filter(item => {
-      for (const key in where) {
-        if (item[key] !== where[key]) {
-          return true;  // Include items that do not match the delete criteria
-        }
-      }
-      return false;  // Exclude items that match the delete criteria
-    });
-  
-    return {
-      deleted: initialLength - this.data.length,
-    };
-  }
+        // Mock implementation for the delete method
+        const initialLength = this.data.length;
+
+        // Use the filter method to exclude items that match the delete criteria
+        this.data = this.data.filter(item => {
+            for (const key in where) {
+                if (item[key] === where[key]) {
+                    return false;  // Exclude items that match the delete criteria
+                }
+            }
+            
+            return true;  // Include items that do not match the delete criteria
+        });
+
+        return {
+            deleted: initialLength - this.data.length,
+        };
+    }
 
 }

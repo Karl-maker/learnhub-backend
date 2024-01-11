@@ -1,28 +1,18 @@
+import mongoose from "mongoose";
+import AccountRepository from "../../repositories/account";
 import { AccountRepositoryType } from "../../repositories/account/interface";
 import { IAccountRepository } from "../../repositories/account/interface";
 import { AccountMockRepository } from "../../repositories/account/mock";
 
 describe('AccountMockRepository', () => {
   // Mock data for testing
-  const mockAccounts: AccountRepositoryType[] = [
-    {
-      id: '1',
-      v: 1,
-      created_at: new Date(),
-      updated_at: new Date(),
-      first_name: 'John',
-      last_name: 'Doe',
-      email: 'john.doe@example.com',
-      hash_password: 'hashedPassword',
-      type: 'student',
-    },
-    // Add more mock data as needed
-  ];
 
+  let mockAccounts: AccountRepositoryType[];
   let accountMockRepository: IAccountRepository;
 
   beforeEach(() => {
-    accountMockRepository = new AccountMockRepository(mockAccounts);
+    const mongoConnection = mongoose.createConnection('mongodb://localhost:27017/your-database-name');
+    accountMockRepository = new AccountRepository.mongo(mongoConnection);
   });
 
   afterEach(() => {
@@ -65,7 +55,7 @@ describe('AccountMockRepository', () => {
     const deleteResult = await accountMockRepository.delete({ email: 'john.doe@example.com' });
     expect(deleteResult.deleted).toBe(1);
 
-    const deletedAccount = mockAccounts.find((account) => account.email === 'john.doe@example.com');
+    const deletedAccount = mockAccounts.find((account) => account.first_name === 'John');
     expect(deletedAccount).toBeUndefined();
   });
 });

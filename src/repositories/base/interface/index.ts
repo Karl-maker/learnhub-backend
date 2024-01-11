@@ -1,5 +1,5 @@
 /**
- * @desc Interface representing a generic repository for CRUD operations.
+ * @desc Interface representing a generic repository for CRUD operations (document / table).
  * @reponsibility Figuring out how data should be accessed from database.
  */
 
@@ -26,6 +26,7 @@ export interface IRepository<T> {
      * @returns A promise containing the result of the update operation.
      */
     update(where: Partial<T>, data: Partial<T>): Promise<RepositoryUpdateResult>;
+
   
     /**
      * Delete method to remove data from the repository.
@@ -42,7 +43,7 @@ export interface IRepository<T> {
 export type RepositoryFindOptions<T> = {
     sort: {
       direction: 'asc' | 'desc';
-      field: keyof T;
+      field: keyof T | 'created_at';
     };
     pagination: {
       page: number;

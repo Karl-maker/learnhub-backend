@@ -1,7 +1,11 @@
 import { AccountMockRepository } from "./mock";
+import { AccountMongoRepository } from "./mongo";
 
-export const accountRepository = {
-    mock: AccountMockRepository
+const AccountRepository = {
+    mock: AccountMockRepository,
+    mongo: AccountMongoRepository
 }
+
+export default AccountRepository;
 
 

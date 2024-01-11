@@ -5,12 +5,12 @@ import { IRepository } from "../../../repositories/base/interface";
  * Interface representing a model abstraction for CRUD operations.
  * @template T - Generic type parameter representing the shape of the data managed by the model.
  */
-export interface IModel<T> {
+export interface IBaseModel<T> {
     // A repository instance that handles data access for the model.
     repository: IRepository<T>;
 
     // Method to create a new data entry.
-    create(data: Partial<T>): Promise<T>;
+    create(data: Partial<T>): Promise<Partial<T>>;
 
     // Method to find a data entry by its unique identifier.
     findById(id: string): Promise<Partial<T>>;
@@ -19,7 +19,7 @@ export interface IModel<T> {
     findOne(where: Partial<T>): Promise<Partial<T>>;
 
     // Method to find multiple data entries based on specified criteria.
-    findMany(where: Partial<T>): Promise<ModelFindManyResult<T>>;
+    findMany(where: Partial<T>, options: FindManyOptions<T>): Promise<ModelFindManyResult<T>>;
 
     // Method to update a data entry by its unique identifier.
     updateById(id: string, update: Partial<T>): Promise<ModelUpdateByIdResult<T>>;
@@ -37,7 +37,7 @@ export interface IModel<T> {
     deleteOne(where: Partial<T>): Promise<ModelDeleteOneResult<T>>;
 
     // Method to delete multiple data entries based on specified criteria.
-    deleteMany(where: Partial<T>, update: Partial<T>): Promise<ModelDeleteManyResult>;
+    deleteMany(where: Partial<T>): Promise<ModelDeleteManyResult>;
 }
 
 // Result type for the deleteMany method, indicating the number of records deleted.
@@ -58,10 +58,7 @@ export type ModelDeleteByIdResult<T> = {
 }
 
 // Result type for the deleteOne method, indicating the deleted data, and success status.
-export type ModelDeleteOneResult<T> = ModelDeleteByIdResult<T> & {
-    data: Partial<T>;
-    successful: boolean;
-}
+export type ModelDeleteOneResult<T> = ModelDeleteByIdResult<T>;
 
 // Result type for the findMany method, including retrieved data and the total amount.
 export type ModelFindManyResult<T> = {
@@ -72,4 +69,17 @@ export type ModelFindManyResult<T> = {
 // Result type for the updateMany method, indicating the number of records mutated.
 export type ModelUpdateManyResult = {
     mutated: number;
+}
+
+export type SortDirection = 'asc' | 'desc';
+
+export type FindManyOptions<T> = {
+      sort: {
+        field: keyof T; 
+        direction: SortDirection;
+      };
+      page: {
+        size: number;
+        number: number;
+      };
 }
