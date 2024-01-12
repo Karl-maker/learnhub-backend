@@ -5,7 +5,7 @@ export interface IAccountLoginRepository extends IRepository<AccountLoginReposit
 export type AccountLoginRepositoryType = RepositoryDatabaseBaseType & {
     account_id: string;
     ip_address: string;
-    origin: string;
+    origin?: string;
     method: AccountLoginMethodsType;
     location?: AccountLoginLocationType;
     refresh: AccountLoginRefreshType;

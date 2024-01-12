@@ -85,7 +85,7 @@ export default (err: HTTPError | Error | BadGatewayError | BadRequestError | For
                 break;
             default:
             // Handle other types of errors
-            logger.error('Unexpected Issue:', err); // Log the error for debugging purposes
+            logger.fatal('Unexpected Issue:', err); // Log the error for debugging purposes
             res.status(500).json({
                 error: {
                 message: 'Internal Server Error',

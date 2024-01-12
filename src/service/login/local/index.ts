@@ -44,7 +44,7 @@ export default class LocalLogin implements ILoginService<JWTLoginCredentials, JW
             });
 
             if(!user) throw new UnauthorizedError('entered wrong email or password');
-            if(!compareHash(credential.password, user.hash_password)) throw new UnauthorizedError('Wrong email or password entered');
+            if(!await compareHash(credential.password, user.hash_password)) throw new UnauthorizedError('Wrong email or password entered');
 
             const payloadRefresh: Payload<RefreshAccountPayload> = {
                 data: {

@@ -1,4 +1,3 @@
-import { HashPasswordType } from "../../../utils/hash";
 import { RepositoryDatabaseBaseType } from "../../base/interface";
 import { IRepository } from "../../base/interface";
 
@@ -8,7 +7,7 @@ export type AccountRepositoryType = RepositoryDatabaseBaseType & {
     last_name: string;
     email?: string;
     mobile?: string;
-    hash_password?: HashPasswordType;
+    hash_password?: string;
     type: AccountRoles;
     deleted?: boolean;
     deactivated?: boolean;

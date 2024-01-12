@@ -1,9 +1,10 @@
 import AccountController from "../../controllers/account";
+import MockDatabase from "../../helpers/db/mock";
 import MongoDBConnector from "../../helpers/db/mongo";
 import LocalAuthentication from "../../middlewares/authenticate/local";
 import AccountModel from "../../models/account";
 import AccountRepository from "../../repositories/account";
-import { IAccountRepository } from "../../repositories/account/interface";
+import { AccountRepositoryType, IAccountRepository } from "../../repositories/account/interface";
 import IServer from "../../server";
 import LocalLogin, { JWTLoginCredentials, JWTLoginResult } from "../../service/login/local";
 import LocalSignup, { LocalSignupType } from "../../service/signup/local";
@@ -14,7 +15,7 @@ import express from 'express';
 const ROUTE = '/account';
 const v1 = (server: IServer, mongodb: MongoDBConnector): express.Router => {
     const accountController = new AccountController();
-    const accountRepository: IAccountRepository = new AccountRepository.mongo(mongodb.connection);
+    const accountRepository: IAccountRepository = new AccountRepository.mock(MockDatabase.getInstance().database.account);
     const accountModel = new AccountModel(accountRepository);
     /**
      * @todo use proper keys from config

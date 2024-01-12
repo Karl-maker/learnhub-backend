@@ -25,10 +25,11 @@ export default class LocalAuthentication implements Authenticate {
                 };
                 req['account'] = account;
 
-                if(role === 'any') next();
-                if(role === payload.data.role) next();
+                if(role !== payload.data.role && role !== 'any') {
+                    throw new UnauthorizedError('Unauthorized');
+                };
 
-                throw new UnauthorizedError('unauthorized');
+                next();
 
             } catch(err) {
                 next(err)

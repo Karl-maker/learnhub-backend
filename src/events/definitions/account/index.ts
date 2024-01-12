@@ -7,7 +7,7 @@ const topics = {
 }
 
 const accountEvent = {
-        topics
+    topics
 }
 
 export type AccountEventSignUpPayload = {
