@@ -1,15 +1,18 @@
 import logger from '../../logger';
 import { AccountRepositoryType } from '../../../repositories/account/interface';
+import { AccountLoginRepositoryType } from '../../../repositories/account-login/interface';
 
 class MockDatabase {
   private static instance: MockDatabase;
   database: {
     account: AccountRepositoryType[];
+    account_login: AccountLoginRepositoryType[];
   }
 
   private constructor() {
     this.database = {
-        account: []
+        account: [],
+        account_login: []
     }
   }
 

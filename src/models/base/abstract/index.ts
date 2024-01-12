@@ -12,8 +12,15 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
         this.repository = repository;
     }
 
-    create(data: Partial<T>): Promise<Partial<T>> {
-        throw new Error("Method not implemented.");
+    async create(data: Partial<T>): Promise<Partial<T>> {
+        try {
+            const result = this.repository.create(data);
+            return {
+                ...result
+            }
+        } catch(err) {
+            throw err;
+        }
     }
     async findById(id: string): Promise<Partial<T>> {
         try {

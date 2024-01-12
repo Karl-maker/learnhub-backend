@@ -90,7 +90,14 @@ export default class AccountController extends AbstractBaseController<AccountRep
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const account: AuthAccountPayload | null = req['account'];
-                const result = await accountModel.updateById(account.id, req.body);
+                const data = req.body as AccountRepositoryType;
+                if(req.body.password){ 
+                    data['hash_password'] = req.body.password;
+                    delete data['password'];
+                }
+                const result = await accountModel.updateById(account.id, data);
+
+                delete result.data.hash_password;
 
                 res.json({
                     data: result.data,
@@ -108,6 +115,8 @@ export default class AccountController extends AbstractBaseController<AccountRep
             try {
                 const account: AuthAccountPayload | null = req['account'];
                 const result = await accountModel.deleteById(account.id);
+
+                delete result.data.hash_password;
 
                 res.json({
                     data: result.data,

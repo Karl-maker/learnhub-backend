@@ -1,5 +1,5 @@
 import { AccountRepositoryType, IAccountRepository } from "../../repositories/account/interface";
-import { HashPasswordType, hashPassword } from "../../utils/hash";
+import { hashPassword } from "../../utils/hash";
 import { AbstractBaseModel } from "../base/abstract";
 import { IBaseModel, ModelDeleteByIdResult, ModelDeleteManyResult, ModelDeleteOneResult, ModelUpdateByIdResult, ModelUpdateManyResult } from "../base/interface";
 
@@ -13,7 +13,7 @@ export default class AccountModel extends AbstractBaseModel<AccountRepositoryTyp
      */
 
     async create(data: Partial<AccountRepositoryType>): Promise<Partial<AccountRepositoryType>> {
-        const hash_password: HashPasswordType = hashPassword(data.hash_password);
+        const hash_password = await hashPassword(data.hash_password);
         const result = await this.repository.create({
             ...data,
             hash_password
@@ -27,11 +27,20 @@ export default class AccountModel extends AbstractBaseModel<AccountRepositoryTyp
 
     async updateById(id: string, update: Partial<AccountRepositoryType>): Promise<ModelUpdateByIdResult<AccountRepositoryType>> {
         if(update.hash_password) {
-            update.hash_password = hashPassword(update.hash_password);
+            update.hash_password = await hashPassword(update.hash_password);
         }
 
         const result = await this.repository.update({ id }, update);
-        const updated_result = await this.repository.find({ id });
+        const updated_result = await this.repository.find({ id }, {
+            sort: {
+                direction: 'asc',
+                field: 'created_at'
+            },
+            pagination: {
+                size: 1,
+                page: 1
+            }
+        });
         return {
             status: result.mutated <= 1,
             data: updated_result.data[0]
@@ -44,7 +53,7 @@ export default class AccountModel extends AbstractBaseModel<AccountRepositoryTyp
 
     async updateMany(where: Partial<AccountRepositoryType>, update: Partial<AccountRepositoryType>): Promise<ModelUpdateManyResult> {
         if(update.hash_password) {
-            update.hash_password = hashPassword(update.hash_password);
+            update.hash_password = await hashPassword(update.hash_password);
         }
     
         const result = await this.repository.update(where, update);
@@ -67,7 +76,16 @@ export default class AccountModel extends AbstractBaseModel<AccountRepositoryTyp
         };
     
         const result = await this.repository.update(where, update);
-        const account = await this.repository.find(where);
+        const account = await this.repository.find(where, {
+            sort: {
+                direction: 'asc',
+                field: 'created_at'
+            },
+            pagination: {
+                size: 1,
+                page: 1
+            }
+        });
         return {
             successful: result.mutated >= 1,
             data: account.data[0]
@@ -86,7 +104,16 @@ export default class AccountModel extends AbstractBaseModel<AccountRepositoryTyp
     
         const account = await this.repository.find(where);
         const result = await this.repository.update({ id: account.data[0].id }, update);
-        const updated_account = await this.repository.find({ id: account.data[0].id });
+        const updated_account = await this.repository.find({ id: account.data[0].id }, {
+            sort: {
+                direction: 'asc',
+                field: 'created_at'
+            },
+            pagination: {
+                size: 1,
+                page: 1
+            }
+        });
 
         return {
             successful: result.mutated >= 1,
