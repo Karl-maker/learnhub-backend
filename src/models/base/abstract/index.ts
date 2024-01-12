@@ -15,8 +15,23 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
     create(data: Partial<T>): Promise<Partial<T>> {
         throw new Error("Method not implemented.");
     }
-    findById(id: string): Promise<Partial<T>> {
-        throw new Error("Method not implemented.");
+    async findById(id: string): Promise<Partial<T>> {
+        try {
+            const where: Partial<T> = { id } as unknown as Partial<T>;
+            const result = await this.repository.find(where, {
+                sort: {
+                    direction: 'asc',
+                    field: 'created_at'
+                },
+                pagination: {
+                    size: 1,
+                    page: 1
+                }
+            });
+            return result.data[0];
+        } catch(err) {
+            throw err;
+        }
     }
     async findOne(where: Partial<T>): Promise<Partial<T>> {
         try {

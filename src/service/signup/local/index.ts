@@ -58,7 +58,13 @@ export default class LocalSignup implements ISignupService<LocalSignupType> {
                 }
             }
 
-            const account = await this.accountModel.create(data);
+            const pass = data.password;
+            delete data.password;
+
+            const account = await this.accountModel.create({
+                ...data,
+                hash_password: pass
+            });
 
             return {
                 ...account
