@@ -1,4 +1,3 @@
-import AccountLoginController from "../../controllers/account-login";
 import StudentController from "../../controllers/student";
 import MockDatabase from "../../helpers/db/mock";
 import MongoDBConnector from "../../helpers/db/mongo";

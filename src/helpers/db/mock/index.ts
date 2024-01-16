@@ -2,6 +2,12 @@ import logger from '../../logger';
 import { AccountRepositoryType } from '../../../repositories/account/interface';
 import { AccountLoginRepositoryType } from '../../../repositories/account-login/interface';
 import { StudentRepositoryType } from '../../../repositories/student/interface';
+import { TopicRepositoryType } from '../../../repositories/topic/interface';
+import { SubjectRepositoryType } from '../../../repositories/subject/interface';
+import { SubSubjectRepositoryType } from '../../../repositories/sub-subject/interface';
+import { CourseRepositoryType } from '../../../repositories/course/interface';
+import { QuizRepositoryType } from '../../../repositories/quiz/interface';
+import { QuestionRepositoryType } from '../../../repositories/question/interface';
 
 class MockDatabase {
   private static instance: MockDatabase;
@@ -9,13 +15,25 @@ class MockDatabase {
     account: AccountRepositoryType[];
     account_login: AccountLoginRepositoryType[];
     student: StudentRepositoryType[];
+    topic: TopicRepositoryType[];
+    subject: SubjectRepositoryType[];
+    sub_subject: SubSubjectRepositoryType[];
+    course: CourseRepositoryType[];
+    quiz: QuizRepositoryType[];
+    question: QuestionRepositoryType[];
   }
 
   private constructor() {
     this.database = {
         account: [],
         account_login: [],
-        student: []
+        student: [],
+        topic: [],
+        subject: [],
+        sub_subject: [],
+        course: [],
+        quiz: [],
+        question: []
     }
   }
 
