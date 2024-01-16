@@ -7,9 +7,10 @@ export type QuestionRepositoryType = RepositoryDatabaseBaseType & {
     name: string; 
     description: string;
     tier_level: number;
+    marks: number;
     content: ContentType[];
     multiple_choice?: MultipleChoiceType[];
-    topic_id: string[];
+    topic: string;
     tips?: TipType[];
 }
 
