@@ -10,7 +10,7 @@ export type QuestionRepositoryType = RepositoryDatabaseBaseType & {
     content: ContentType[];
     multiple_choice?: MultipleChoiceType[];
     topic_id: string[];
-    tips: TipType[];
+    tips?: TipType[];
 }
 
 export type ContentType = {
