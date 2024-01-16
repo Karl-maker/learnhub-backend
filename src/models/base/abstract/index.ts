@@ -14,7 +14,7 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
 
     async create(data: Partial<T>): Promise<Partial<T>> {
         try {
-            const result = this.repository.create(data);
+            const result = await this.repository.create(data);
             return {
                 ...result
             }

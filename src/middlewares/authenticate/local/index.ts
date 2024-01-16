@@ -8,6 +8,7 @@ import { AccessAccountPayload } from "../../../service/login/local";
 import { AccountRoles } from "../../../repositories/account/interface";
 import UnauthorizedError from "../../../utils/error/unauthorized";
 import RetrieveTokenFromRequest from "../../../utils/auth/retrieve/interface";
+import logger from "../../../helpers/logger";
 
 export default class LocalAuthentication implements Authenticate {
     jwt: JWT;
@@ -19,9 +20,10 @@ export default class LocalAuthentication implements Authenticate {
             try{
                 const token = retrieveToken.retrieve(req);
                 const payload: Payload<AccessAccountPayload> = this.jwt.verify<AccessAccountPayload>(token);
+                const userrole: AccountRoles = payload.data.role;
                 const account: AuthAccountPayload = {
                     id: payload.data.id,
-                    role: payload.data.role
+                    role: userrole
                 };
                 req['account'] = account;
 
