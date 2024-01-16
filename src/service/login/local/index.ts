@@ -1,4 +1,5 @@
 import config from "../../../config";
+import logger from "../../../helpers/logger";
 import AccountModel from "../../../models/account";
 import { AccountRepositoryType, AccountRoles } from "../../../repositories/account/interface";
 import UnauthorizedError from "../../../utils/error/unauthorized";
@@ -53,16 +54,18 @@ export default class LocalLogin implements ILoginService<JWTLoginCredentials, JW
                 iss: config.token.iss
             }
 
+            const role: AccountRoles = user.type;
+
             const payloadAccess: Payload<AccessAccountPayload> = {
                 data: {
                     id: user.id,
-                    role: user.type
+                    role
                 },
                 iss: config.token.iss
             }
 
-            const access_token = this.accessJwt.create<RefreshAccountPayload>(payloadRefresh, '1d');
-            const refresh_token = this.refreshJwt.create<AccessAccountPayload>(payloadAccess, '30d');
+            const access_token = this.accessJwt.create<RefreshAccountPayload>(payloadAccess, '1d');
+            const refresh_token = this.refreshJwt.create<RefreshAccountPayload>(payloadRefresh, '30d');
             
             return {
                 access_token,

@@ -7,6 +7,7 @@ import config from "./config";
 import errorHandler, { error404 } from "./helpers/error-handler";
 import account from "./routes/account";
 import account_login from "./routes/account-login";
+import student from "./routes/student";
 import event from "./events/handlers";
 
 const app = express();
@@ -28,7 +29,8 @@ const mongo_db_uri = config.database[config.environment].uri;
     server.app.use(express.json())
     server.app.use(`/api/v1`,
       account.v1(server, mongo),
-      account_login.v1(server, mongo)
+      account_login.v1(server, mongo),
+      student.v1(server, mongo),
     )
     server.app.use(error404)
     server.app.use(errorHandler);
