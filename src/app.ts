@@ -8,6 +8,12 @@ import errorHandler, { error404 } from "./helpers/error-handler";
 import account from "./routes/account";
 import account_login from "./routes/account-login";
 import student from "./routes/student";
+import quiz from "./routes/quiz";
+import question from "./routes/question";
+import course from "./routes/course";
+import subject from "./routes/subject";
+import subsubject from "./routes/sub-subject";
+import topic from "./routes/topic";
 import event from "./events/handlers";
 
 const app = express();
@@ -31,12 +37,17 @@ const mongo_db_uri = config.database[config.environment].uri;
       account.v1(server, mongo),
       account_login.v1(server, mongo),
       student.v1(server, mongo),
+      quiz.v1(server, mongo),
+      question.v1(server, mongo),
+      course.v1(server, mongo),
+      subject.v1(server, mongo),
+      subsubject.v1(server, mongo),
+      topic.v1(server, mongo),
     )
     server.app.use(error404)
     server.app.use(errorHandler);
 
     // event handlers
-
     event.account();
 
     // start the server

@@ -1,7 +1,9 @@
 import { QuizMockRepository } from "./mock";
+import { QuizMongoRepository } from "./mongo";
 
 const QuizRepository = {
-    mock: QuizMockRepository
+    mock: QuizMockRepository,
+    mongo: QuizMongoRepository
 }
 
 export default QuizRepository;

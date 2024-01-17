@@ -5,5 +5,7 @@ export type CourseRepositoryType = RepositoryDatabaseBaseType & {
     name: string;
     description: string;
     grades: number[];
-    topics: string[];
+    topics: {
+        id: string;
+    }[];
 }
