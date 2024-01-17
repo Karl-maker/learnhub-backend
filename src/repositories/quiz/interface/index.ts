@@ -10,7 +10,7 @@ export type QuizRepositoryType = RepositoryDatabaseBaseType & {
 }
 
 export type QuizQuestion = {
-    question_id: string;
+    id: string;
     possible_marks: number;
     earned_marks: number;
     completed: boolean;

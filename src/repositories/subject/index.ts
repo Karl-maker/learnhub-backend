@@ -1,7 +1,9 @@
 import { SubjectMockRepository } from "./mock";
+import { SubjectMongoRepository } from "./mongo";
 
 const SubjectRepository = {
-    mock: SubjectMockRepository
+    mock: SubjectMockRepository,
+    mongo: SubjectMongoRepository
 }
 
 export default SubjectRepository;

@@ -32,7 +32,7 @@ export default class BasicQuizGenerator implements IQuizGenerator {
             
             questions.forEach((question) => {
                 quiz_questions.push({
-                    question_id: question.id,
+                    id: question.id,
                     possible_marks: question.marks,
                     completed: false,
                     earned_marks: 0

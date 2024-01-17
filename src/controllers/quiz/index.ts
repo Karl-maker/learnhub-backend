@@ -15,7 +15,7 @@ export default class QuizController extends AbstractBaseController<QuizRepositor
         return async(req: Request, res: Response, next: NextFunction) => {
             try{
                 const account: AuthAccountPayload | null = req['account'];
-                const topic: string = String(req.query.topic);
+                const topic: string = String(req.body.topic);
                 const student = await studentModel.findOne({
                     account_id: account.id
                 })

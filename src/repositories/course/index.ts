@@ -1,7 +1,9 @@
 import { CourseMockRepository } from "./mock";
+import { CourseMongoRepository } from "./mongo";
 
 const CourseRepository = {
-    mock: CourseMockRepository
+    mock: CourseMockRepository,
+    mongo: CourseMongoRepository
 }
 
 export default CourseRepository;
