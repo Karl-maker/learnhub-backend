@@ -1,5 +1,5 @@
 import config from "../../../config";
-import MockDatabase from "../../../helpers/db/mock";
+import JWT from "../../../utils/jwt";
 import IEmail, { StudentConfirmationContext } from "../../../helpers/email/interface";
 import NodeMailer from "../../../helpers/email/nodemailer";
 import event from "../../../helpers/event";
@@ -10,6 +10,7 @@ import AccountRepository from "../../../repositories/account";
 import AccountLoginRepository from "../../../repositories/account-login";
 import { AccountRepositoryType } from "../../../repositories/account/interface";
 import { AccountEventLoginPayload, AccountEventSignUpPayload, accountEvent } from "../../definitions/account";
+import { StudentConfirmationPayload } from "../../../types";
 
 export default () => {
 
@@ -42,7 +43,7 @@ export default () => {
 
     /**
      * @desc confirmation email
-     * @todo generate confirmation link
+     * @todo add private and public key
      */
     event.subscribe(accountEvent.topics.AccountSignUp, (payload: AccountEventSignUpPayload) => {
         (async () => {
@@ -50,8 +51,15 @@ export default () => {
 
                 if(payload.account.type === 'administrator') return;
 
+                const token = new JWT("secret", "secret").create<StudentConfirmationPayload>({
+                    iss: config.token.iss,
+                    data: {
+                        id: payload.account.id
+                    }
+                }, '15m');
+
                 const BASE_URL = config.domain.url;
-                const CONFIRMATION_URL = `${BASE_URL}/api/v1/confirm`;
+                const CONFIRMATION_URL = `${BASE_URL}/api/v1/account/confirmation/${token}`;
                 const email: IEmail = new NodeMailer();
                 email.send<StudentConfirmationContext>({
                     email: payload.account.email,
@@ -63,6 +71,8 @@ export default () => {
                         link: CONFIRMATION_URL
                     }
                 });
+
+                logger.debug(`Signup Event:`, CONFIRMATION_URL)
 
             } catch(err) {
                 logger.error(err.message, err);

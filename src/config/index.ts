@@ -13,6 +13,16 @@ export default {
     token: {
       iss: 'StudentLearningltm'
     },
+    redirects: {
+      confirmation: {
+        success: { 
+          url: env.CONFIRMATION_SUCCESS_URL || `http://localhost:4000/success`
+        },
+        fail: {
+          url: env.CONFIRMATION_FAIL_URL || `http://localhost:4000/fail`
+        }
+      }
+    },
     database: {
         development: {
           uri: env.MONGO_DB_DEV_URI || env.MONGO_DB_URI || "",

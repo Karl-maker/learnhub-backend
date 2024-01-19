@@ -13,7 +13,8 @@ export class AccountMongoRepository extends Repository.mongo<AccountRepositoryTy
         hash_password: { type: String },
         type: { type: String },
         deleted: { type: Boolean, default: false },
-        deactivated: { type: Boolean, default: false }
+        deactivated: { type: Boolean, default: false },
+        confirmed: { type: Boolean, default: false }
       }, {
         timestamps: { 
             updatedAt: 'updated_at', 

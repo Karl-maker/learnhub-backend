@@ -11,6 +11,7 @@ export type AccountRepositoryType = RepositoryDatabaseBaseType & {
     type: AccountRoles;
     deleted?: boolean;
     deactivated?: boolean;
+    confirmed?: boolean;
 }
 
 export type AccountRoles = 'student' | 'administrator'
