@@ -5,7 +5,7 @@ services:
     ports: 
       - "${EXTERNAL_PORT}:${PORT}"
     environment:
-      PORT: "${EXTERNAL_PORT}"
+      PORT: "${PORT}"
       NODE_ENV: "${NODE_ENV}"
       NODEMAILER_SERVICE: "${NODEMAILER_SERVICE}"
       NODEMAILER_HOST: "${NODEMAILER_HOST}"

@@ -9,7 +9,7 @@ services:
       target: dev
     container_name: service
     volumes:
-      - ../service:/app
+      - ../:/app
       - /app/node_modules
     depends_on:
       - mongodb

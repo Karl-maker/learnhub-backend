@@ -19,13 +19,13 @@ import JWT from "../../utils/jwt";
 import express from 'express';
 
 const ROUTE = '/quiz';
-const v1 = (server: IServer, mongodb: MongoDBConnector): express.Router => {
+const v1 = (server: IServer): express.Router => {
     const quizController = new QuizController();
-    const quizRepository: IQuizRepository = new QuizRepository.mongo(mongodb.connection);
+    const quizRepository: IQuizRepository = QuizRepository.mock;
     const quizModel = new QuizModel(quizRepository);
-    const questionRepository: IQuestionRepository = new QuestionRepository.mongo(mongodb.connection);
+    const questionRepository: IQuestionRepository = QuestionRepository.mock;
     const questionModel = new QuestionModel(questionRepository)
-    const studentRepository: IStudentRepository = new StudentRepository.mongo(mongodb.connection);
+    const studentRepository: IStudentRepository = StudentRepository.mock;
     const studentModel = new StudentModel(studentRepository)
     const quizGenerator: IQuizGenerator = new BasicQuizGenerator(quizModel, questionModel);
     /**

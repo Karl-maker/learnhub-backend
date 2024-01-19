@@ -16,8 +16,8 @@ export default () => {
     event.subscribe(accountEvent.topics.AccountLogin, (payload: AccountEventLoginPayload) => {
         (async ()=> {
             try {
-                const accountLoginRepository = new AccountLoginRepository.mock(MockDatabase.getInstance().database.account_login);
-                const accountRepository = new AccountRepository.mock(MockDatabase.getInstance().database.account);
+                const accountLoginRepository = AccountLoginRepository.mock;
+                const accountRepository = AccountRepository.mock;
                 const accountLoginModel = new AccountLoginModel(accountLoginRepository);
                 const accountModel = new AccountModel(accountRepository);
     

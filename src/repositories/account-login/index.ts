@@ -1,9 +1,11 @@
+import MockDatabase from "../../helpers/db/mock";
+import MongoDBConnector from "../../helpers/db/mongo";
 import { AccountLoginMockRepository } from "./mock";
 import { AccountLoginMongoRepository } from "./mongo";
 
 const AccountLoginRepository = {
-    mock: AccountLoginMockRepository,
-    mongo: AccountLoginMongoRepository
+    mock: new AccountLoginMockRepository(MockDatabase.getInstance().database.account_login),
+    // mongo: new AccountLoginMongoRepository(MongoDBConnector.connection)
 }
 
 export default AccountLoginRepository;

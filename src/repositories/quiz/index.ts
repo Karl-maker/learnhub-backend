@@ -1,9 +1,11 @@
+import MockDatabase from "../../helpers/db/mock";
+import MongoDBConnector from "../../helpers/db/mongo";
 import { QuizMockRepository } from "./mock";
 import { QuizMongoRepository } from "./mongo";
 
 const QuizRepository = {
-    mock: QuizMockRepository,
-    mongo: QuizMongoRepository
+    mock: new QuizMockRepository(MockDatabase.getInstance().database.quiz),
+    // mongo: new QuizMongoRepository(MongoDBConnector.connection)
 }
 
 export default QuizRepository;
