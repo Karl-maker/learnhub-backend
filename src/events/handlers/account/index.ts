@@ -1,4 +1,7 @@
+import config from "../../../config";
 import MockDatabase from "../../../helpers/db/mock";
+import IEmail, { StudentConfirmationContext } from "../../../helpers/email/interface";
+import NodeMailer from "../../../helpers/email/nodemailer";
 import event from "../../../helpers/event";
 import logger from "../../../helpers/logger";
 import AccountModel from "../../../models/account";
@@ -36,9 +39,36 @@ export default () => {
             }
         })();
     })
-    
+
+    /**
+     * @desc confirmation email
+     * @todo generate confirmation link
+     */
     event.subscribe(accountEvent.topics.AccountSignUp, (payload: AccountEventSignUpPayload) => {
-        logger.debug(accountEvent.topics.AccountSignUp, payload)
+        (async () => {
+            try {
+
+                if(payload.account.type === 'administrator') return;
+
+                const BASE_URL = config.domain.url;
+                const CONFIRMATION_URL = `${BASE_URL}/api/v1/confirm`;
+                const email: IEmail = new NodeMailer();
+                email.send<StudentConfirmationContext>({
+                    email: payload.account.email,
+                    subject: `Confirmation Email`,
+                    template: 'student-confirmation',
+                    context: {
+                        date: new Date(),
+                        name: payload.account.first_name,
+                        link: CONFIRMATION_URL
+                    }
+                });
+
+            } catch(err) {
+                logger.error(err.message, err);
+            }
+
+        })
     })
 
 }

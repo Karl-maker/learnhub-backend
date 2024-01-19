@@ -7,6 +7,9 @@ const env = process.env;
 export default {
     port: Number(env.PORT) || 3000,
     environment: env.NODE_ENV || "development",
+    domain: {
+      url: env.DOMAIN_URL || `http://localhost:${Number(env.PORT) || 3000}`
+    },
     token: {
       iss: 'StudentLearningltm'
     },
