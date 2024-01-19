@@ -1,4 +1,7 @@
-import MockDatabase from "../../../helpers/db/mock";
+import config from "../../../config";
+import JWT from "../../../utils/jwt";
+import IEmail, { StudentConfirmationContext } from "../../../helpers/email/interface";
+import NodeMailer from "../../../helpers/email/nodemailer";
 import event from "../../../helpers/event";
 import logger from "../../../helpers/logger";
 import AccountModel from "../../../models/account";
@@ -7,6 +10,7 @@ import AccountRepository from "../../../repositories/account";
 import AccountLoginRepository from "../../../repositories/account-login";
 import { AccountRepositoryType } from "../../../repositories/account/interface";
 import { AccountEventLoginPayload, AccountEventSignUpPayload, accountEvent } from "../../definitions/account";
+import { StudentConfirmationPayload } from "../../../types";
 
 export default () => {
 
@@ -36,9 +40,45 @@ export default () => {
             }
         })();
     })
-    
+
+    /**
+     * @desc confirmation email
+     * @todo add private and public key
+     */
     event.subscribe(accountEvent.topics.AccountSignUp, (payload: AccountEventSignUpPayload) => {
-        logger.debug(accountEvent.topics.AccountSignUp, payload)
+        (async () => {
+            try {
+
+                if(payload.account.type === 'administrator') return;
+
+                const token = new JWT("secret", "secret").create<StudentConfirmationPayload>({
+                    iss: config.token.iss,
+                    data: {
+                        id: payload.account.id
+                    }
+                }, '15m');
+
+                const BASE_URL = config.domain.url;
+                const CONFIRMATION_URL = `${BASE_URL}/api/v1/account/confirmation/${token}`;
+                const email: IEmail = new NodeMailer();
+                email.send<StudentConfirmationContext>({
+                    email: payload.account.email,
+                    subject: `Confirmation Email`,
+                    template: 'student-confirmation',
+                    context: {
+                        date: new Date(),
+                        name: payload.account.first_name,
+                        link: CONFIRMATION_URL
+                    }
+                });
+
+                logger.debug(`Signup Event:`, CONFIRMATION_URL)
+
+            } catch(err) {
+                logger.error(err.message, err);
+            }
+
+        })
     })
 
 }

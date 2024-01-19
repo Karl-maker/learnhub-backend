@@ -23,6 +23,10 @@ const v1 = (server: IServer): express.Router => {
      * @todo use proper keys from config
      */
     const refreshJwt = new JWT("secret", "secret");
+    /**
+     * @todo use proper keys from config
+     */
+    const confirmationJwt = new JWT("secret", "secret");
     const signupService = new LocalSignup(accountModel);
     const loginService = new LocalLogin(accountModel, accessJwt, refreshJwt);
     const localAuthentication = new LocalAuthentication(accessJwt);
@@ -34,6 +38,8 @@ const v1 = (server: IServer): express.Router => {
     server.router.get(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), accountController.getCurrent(accountModel));
     server.router.patch(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), accountController.updateCurrent(accountModel));
     server.router.delete(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), accountController.deleteCurrent(accountModel));
+
+    server.router.get(`${ROUTE}/confirmation/:token`, accountController.confirmByToken(accountModel, confirmationJwt));
 
     server.router.post(`${ROUTE}`, localAuthentication.auth('administrator', retrieveTokenBearer), accountController.create(accountModel));
     server.router.get(`${ROUTE}/:account_id`, localAuthentication.auth('administrator', retrieveTokenBearer), accountController.findById(accountModel));

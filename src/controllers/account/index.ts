@@ -1,3 +1,4 @@
+import config from "../../config";
 import { AccountEventLoginPayload, AccountEventSignUpPayload, accountEvent } from "../../events/definitions/account";
 import event from "../../helpers/event";
 import { AuthAccountPayload } from "../../middlewares/authenticate/interface";
@@ -6,6 +7,8 @@ import { AccountLoginMethodsType } from "../../repositories/account-login/interf
 import { AccountRepositoryType } from "../../repositories/account/interface";
 import ILoginService from "../../service/login/interface";
 import ISignupService from "../../service/signup/interface";
+import { StudentConfirmationPayload } from "../../types";
+import JWT from "../../utils/jwt";
 import AbstractBaseController from "../base/abstract";
 import IBaseController from "../base/interface";
 import { RequestHandler, Request, Response, NextFunction } from 'express';
@@ -124,6 +127,19 @@ export default class AccountController extends AbstractBaseController<AccountRep
                 })
 
             } catch(err) {
+                next(err);
+            }
+        }
+    }
+    
+    confirmByToken(accountModel: AccountModel, JWT: JWT): RequestHandler {
+        return async(req: Request, res: Response, next: NextFunction) => {
+            try {
+                const id = JWT.verify<StudentConfirmationPayload>(req.params.token).data.id;
+                await accountModel.updateById(id, { confirmed: true });
+                res.redirect(config.redirects.confirmation.success.url)
+            } catch(err) {
+                res.redirect(config.redirects.confirmation.fail.url)
                 next(err);
             }
         }
