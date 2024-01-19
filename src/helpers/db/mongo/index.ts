@@ -2,17 +2,9 @@ import mongoose, { Connection, ConnectOptions } from 'mongoose';
 import logger from '../../logger';
 
 class MongoDBConnector {
-  private static instance: MongoDBConnector;
   connection: Connection | null = null;
 
-  private constructor() {}
-
-  static getInstance(): MongoDBConnector {
-    if (!this.instance) {
-      this.instance = new MongoDBConnector();
-    }
-    return this.instance;
-  }
+  constructor() {}
 
   async connect(databaseUri: string, options?: mongoose.ConnectOptions): Promise<void> {
     try {
@@ -45,4 +37,4 @@ class MongoDBConnector {
   }
 }
 
-export default MongoDBConnector;
+export default new MongoDBConnector();

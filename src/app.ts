@@ -19,30 +19,30 @@ import event from "./events/handlers";
 const app = express();
 const port = config.port;
 const server: IServer = new ExpressServer(app);
-const mongo = MongoDBConnector.getInstance();
+const mongo = MongoDBConnector;
 const mongo_db_uri = config.database[config.environment].uri;
 
 
 (async() => {
-    // await mongo.connect(mongo_db_uri, {
-    //   dbName: config.database[config.environment].name,
-    //   user: config.database[config.environment].user,
-    //   pass: config.database[config.environment].password, 
-    //   retryWrites: true, 
-    //   w: "majority" 
-    // });
+    await mongo.connect(mongo_db_uri, {
+      dbName: config.database[config.environment].name,
+      user: config.database[config.environment].user,
+      pass: config.database[config.environment].password, 
+      retryWrites: true, 
+      w: "majority" 
+    });
 
     server.app.use(express.json())
     server.app.use(`/api/v1`,
-      account.v1(server, mongo),
-      account_login.v1(server, mongo),
-      student.v1(server, mongo),
-      quiz.v1(server, mongo),
-      question.v1(server, mongo),
-      course.v1(server, mongo),
-      subject.v1(server, mongo),
-      subsubject.v1(server, mongo),
-      topic.v1(server, mongo),
+      account.v1(server),
+      account_login.v1(server),
+      student.v1(server),
+      quiz.v1(server),
+      question.v1(server),
+      course.v1(server),
+      subject.v1(server),
+      subsubject.v1(server),
+      topic.v1(server),
     )
     server.app.use(error404)
     server.app.use(errorHandler);

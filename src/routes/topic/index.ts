@@ -11,9 +11,9 @@ import JWT from "../../utils/jwt";
 import express from 'express';
 
 const ROUTE = '/topic';
-const v1 = (server: IServer, mongodb: MongoDBConnector): express.Router => {
+const v1 = (server: IServer): express.Router => {
     const topicController = new TopicController();
-    const topicRepository: ITopicRepository = new TopicRepository.mock(MockDatabase.getInstance().database.topic);
+    const topicRepository: ITopicRepository = TopicRepository.mock;
     const topicModel = new TopicModel(topicRepository);
     /**
      * @todo use proper keys from config
