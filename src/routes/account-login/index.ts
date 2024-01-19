@@ -13,7 +13,7 @@ import express from 'express';
 const ROUTE = '/account-login';
 const v1 = (server: IServer, mongodb: MongoDBConnector): express.Router => {
     const accountLoginController = new AccountLoginController();
-    const accountLoginRepository: IAccountLoginRepository = new AccountLoginRepository.mock(MockDatabase.getInstance().database.account_login);
+    const accountLoginRepository: IAccountLoginRepository = new AccountLoginRepository.mongo(mongodb.connection);
     const accountLoginModel = new AccountLoginModel(accountLoginRepository);
     /**
      * @todo use proper keys from config

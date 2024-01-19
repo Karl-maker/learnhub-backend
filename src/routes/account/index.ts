@@ -15,7 +15,7 @@ import express from 'express';
 const ROUTE = '/account';
 const v1 = (server: IServer, mongodb: MongoDBConnector): express.Router => {
     const accountController = new AccountController();
-    const accountRepository: IAccountRepository = new AccountRepository.mock(MockDatabase.getInstance().database.account);
+    const accountRepository: IAccountRepository = new AccountRepository.mongo(mongodb.connection);
     const accountModel = new AccountModel(accountRepository);
     /**
      * @todo use proper keys from config

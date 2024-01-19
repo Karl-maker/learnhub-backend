@@ -21,11 +21,11 @@ import express from 'express';
 const ROUTE = '/quiz';
 const v1 = (server: IServer, mongodb: MongoDBConnector): express.Router => {
     const quizController = new QuizController();
-    const quizRepository: IQuizRepository = new QuizRepository.mock(MockDatabase.getInstance().database.quiz);
+    const quizRepository: IQuizRepository = new QuizRepository.mongo(mongodb.connection);
     const quizModel = new QuizModel(quizRepository);
-    const questionRepository: IQuestionRepository = new QuestionRepository.mock(MockDatabase.getInstance().database.question);
+    const questionRepository: IQuestionRepository = new QuestionRepository.mongo(mongodb.connection);
     const questionModel = new QuestionModel(questionRepository)
-    const studentRepository: IStudentRepository = new StudentRepository.mock(MockDatabase.getInstance().database.student);
+    const studentRepository: IStudentRepository = new StudentRepository.mongo(mongodb.connection);
     const studentModel = new StudentModel(studentRepository)
     const quizGenerator: IQuizGenerator = new BasicQuizGenerator(quizModel, questionModel);
     /**

@@ -4,10 +4,12 @@ import { IRepository } from "../../base/interface";
 export interface IStudentRepository extends IRepository<StudentRepositoryType> {}
 export type StudentRepositoryType = RepositoryDatabaseBaseType & {
     account_id: string; // FK
-    school?: string;
+    school?: {
+        name?: string;
+    };
     location?: {
         country: string;
         district: string;
     };
-    current_grade?: number;
+    grade?: number;
 }

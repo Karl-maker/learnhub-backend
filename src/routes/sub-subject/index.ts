@@ -13,7 +13,7 @@ import express from 'express';
 const ROUTE = '/sub-subject';
 const v1 = (server: IServer, mongodb: MongoDBConnector): express.Router => {
     const subSubjectController = new SubSubjectController();
-    const subSubjectRepository: ISubSubjectRepository = new SubSubjectRepository.mock(MockDatabase.getInstance().database.sub_subject);
+    const subSubjectRepository: ISubSubjectRepository = new SubSubjectRepository.mongo(mongodb.connection);
     const subSubjectModel = new SubSubjectModel(subSubjectRepository);
     /**
      * @todo use proper keys from config
