@@ -23,6 +23,15 @@ export default {
         }
       }
     },
+    nodemailer: {
+      service: env.NODEMAILER_SERVICE,
+      host: env.NODEMAILER_HOST,
+      port: env.NODEMAILER_PORT || 587,
+      auth: {
+        user: env.NODEMAILER_USER,
+        password: env.NODEMAILER_PASS
+      }
+    },
     database: {
         development: {
           uri: env.MONGO_DB_DEV_URI || env.MONGO_DB_URI || "",
