@@ -8,7 +8,7 @@ export default {
     port: Number(env.PORT) || 3000,
     environment: env.NODE_ENV || "development",
     domain: {
-      url: env.DOMAIN_URL || `http://localhost:${Number(env.PORT) || 3000}`
+      url: env.DOMAIN_URL || `http://localhost:${Number(env.PORT) || 3000}`,
     },
     token: {
       iss: 'StudentLearningltm'
@@ -52,4 +52,9 @@ export default {
           user: env.TEST_MONGO_DB_USER
         }
     },
+    contact: {
+      email: {
+        support: `support@yourcompany.com`
+      }
+    }
 }

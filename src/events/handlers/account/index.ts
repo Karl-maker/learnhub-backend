@@ -78,7 +78,8 @@ export default () => {
                     template: 'student-confirmation',
                     context: {
                         name: payload.account.first_name,
-                        link: CONFIRMATION_URL
+                        link: CONFIRMATION_URL,
+                        support_email: config.contact.email.support
                     }
                 });
 

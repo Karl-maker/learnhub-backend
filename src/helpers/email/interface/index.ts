@@ -21,7 +21,8 @@ export type DefaultContext = {
 
 export type StudentConfirmationTemplate = 'student-confirmation';
 export type StudentConfirmationContext = {
-    link: string
+    link: string;
+    support_email: string;
 };
 
 export type StudentOnboardingTemplate = 'student-onboarding';
