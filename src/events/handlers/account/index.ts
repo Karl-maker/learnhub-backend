@@ -61,6 +61,7 @@ export default () => {
                 const BASE_URL = config.domain.url;
                 const CONFIRMATION_URL = `${BASE_URL}/api/v1/account/confirmation/${token}`;
                 const email: IEmail = new NodeMailer();
+
                 email.send<StudentConfirmationContext>({
                     email: payload.account.email,
                     subject: `Confirmation Email`,
@@ -72,13 +73,11 @@ export default () => {
                     }
                 });
 
-                logger.debug(`Signup Event:`, CONFIRMATION_URL)
-
             } catch(err) {
                 logger.error(err.message, err);
             }
 
-        })
+        })();
     })
 
 }

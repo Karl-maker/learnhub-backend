@@ -32,6 +32,9 @@ const mongo_db_uri = config.database[config.environment].uri;
     //   w: "majority" 
     // });
 
+    // event handlers
+    event.account();
+
     server.app.use(express.json())
     server.app.use(`/api/v1`,
       account.v1(server),
@@ -46,9 +49,6 @@ const mongo_db_uri = config.database[config.environment].uri;
     )
     server.app.use(error404)
     server.app.use(errorHandler);
-
-    // event handlers
-    event.account();
 
     // start the server
     server.start(port, () => {
