@@ -10,11 +10,10 @@ export type EmailInput<T> = {
 };
 
 export type Context<T> = T & {
-    date: Date;
     name: string;
 }
 
-export type DefaultTemplate = 'default';
+export type DefaultTemplate = 'information';
 export type DefaultContext = {
     paragraph: string;
     title: string;
@@ -22,7 +21,8 @@ export type DefaultContext = {
 
 export type StudentConfirmationTemplate = 'student-confirmation';
 export type StudentConfirmationContext = {
-    link: string
+    link: string;
+    support_email: string;
 };
 
 export type StudentOnboardingTemplate = 'student-onboarding';

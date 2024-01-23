@@ -8,6 +8,7 @@ import { SubSubjectRepositoryType } from '../../../repositories/sub-subject/inte
 import { CourseRepositoryType } from '../../../repositories/course/interface';
 import { QuizRepositoryType } from '../../../repositories/quiz/interface';
 import { QuestionRepositoryType } from '../../../repositories/question/interface';
+import { TopicProgressionRepositoryType } from '../../../repositories/topic-progression/interface';
 
 class MockDatabase {
   private static instance: MockDatabase;
@@ -21,6 +22,7 @@ class MockDatabase {
     course: CourseRepositoryType[];
     quiz: QuizRepositoryType[];
     question: QuestionRepositoryType[];
+    topic_progression: TopicProgressionRepositoryType[];
   }
 
   private constructor() {
@@ -33,7 +35,8 @@ class MockDatabase {
         sub_subject: [],
         course: [],
         quiz: [],
-        question: []
+        question: [],
+        topic_progression: []
     }
   }
 

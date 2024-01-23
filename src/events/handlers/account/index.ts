@@ -1,7 +1,7 @@
 import config from "../../../config";
 import JWT from "../../../utils/jwt";
 import IEmail, { StudentConfirmationContext } from "../../../helpers/email/interface";
-import NodeMailer from "../../../helpers/email/nodemailer";
+import NodeMailer, { NodeMailerConfig } from "../../../helpers/email/nodemailer";
 import event from "../../../helpers/event";
 import logger from "../../../helpers/logger";
 import AccountModel from "../../../models/account";
@@ -60,16 +60,26 @@ export default () => {
 
                 const BASE_URL = config.domain.url;
                 const CONFIRMATION_URL = `${BASE_URL}/api/v1/account/confirmation/${token}`;
-                const email: IEmail = new NodeMailer();
+                const nodeMailerConfig: NodeMailerConfig = {
+                    service: config.nodemailer.service,
+                    host: config.nodemailer.host,
+                    port: Number(config.nodemailer.port),
+                    auth: {
+                        user: config.nodemailer.auth.user,
+                        pass: config.nodemailer.auth.password
+                    },
+                    secure: false
+                }
+                const email: IEmail = new NodeMailer(nodeMailerConfig);
 
                 email.send<StudentConfirmationContext>({
                     email: payload.account.email,
                     subject: `Confirmation Email`,
                     template: 'student-confirmation',
                     context: {
-                        date: new Date(),
                         name: payload.account.first_name,
-                        link: CONFIRMATION_URL
+                        link: CONFIRMATION_URL,
+                        support_email: config.contact.email.support
                     }
                 });
 

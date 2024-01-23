@@ -8,7 +8,7 @@ export default {
     port: Number(env.PORT) || 3000,
     environment: env.NODE_ENV || "development",
     domain: {
-      url: env.DOMAIN_URL || `http://localhost:${Number(env.PORT) || 3000}`
+      url: env.DOMAIN_URL || `http://localhost:${Number(env.PORT) || 3000}`,
     },
     token: {
       iss: 'StudentLearningltm'
@@ -21,6 +21,15 @@ export default {
         fail: {
           url: env.CONFIRMATION_FAIL_URL || `http://localhost:4000/fail`
         }
+      }
+    },
+    nodemailer: {
+      service: env.NODEMAILER_SERVICE,
+      host: env.NODEMAILER_HOST,
+      port: env.NODEMAILER_PORT || 587,
+      auth: {
+        user: env.NODEMAILER_USER,
+        password: env.NODEMAILER_PASS
       }
     },
     database: {
@@ -43,4 +52,9 @@ export default {
           user: env.TEST_MONGO_DB_USER
         }
     },
+    contact: {
+      email: {
+        support: `support@yourcompany.com`
+      }
+    }
 }
