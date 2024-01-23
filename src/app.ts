@@ -14,6 +14,7 @@ import course from "./routes/course";
 import subject from "./routes/subject";
 import subsubject from "./routes/sub-subject";
 import topic from "./routes/topic";
+import topic_progression from "./routes/topic-progression"
 import event from "./events/handlers";
 
 const app = express();
@@ -43,6 +44,7 @@ const mongo_db_uri = config.database[config.environment].uri;
       subject.v1(server),
       subsubject.v1(server),
       topic.v1(server),
+      topic_progression.v1(server)
     )
     server.app.use(error404)
     server.app.use(errorHandler);
