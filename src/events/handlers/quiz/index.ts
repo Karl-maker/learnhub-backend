@@ -38,7 +38,7 @@ export default () => {
                     total_points += question.possible_marks;
                 });
 
-                if(!score) score = total_score / total_points;
+                if(score === undefined || score === null) score = score <= 0 ? 0 : isNaN(total_score / total_points) ? 0 : total_score / total_points;
 
                 switch (true) {
                     case score <= 0:
@@ -135,7 +135,7 @@ export default () => {
                         quiz_id: payload.data.response.id,
                         total_points,
                         total_score,
-                        score: score * 100,
+                        score: score <= 0 ? 0 : score * 100,
                         message
                     }
                 });
