@@ -6,7 +6,8 @@ export type QuizRepositoryType = RepositoryDatabaseBaseType & {
     student_id: string; 
     questions: QuizQuestion[];
     type: QuizType;
-    progress: boolean;
+    complete: boolean;
+    score: number;
 }
 
 export type QuizQuestion = {

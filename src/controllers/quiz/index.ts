@@ -5,10 +5,12 @@ import IQuizGenerator from "../../service/quiz_generator/interface";
 import { NextFunction, RequestHandler, Request, Response } from "express";
 import { AuthAccountPayload } from "../../middlewares/authenticate/interface";
 import StudentModel from "../../models/student";
+import { EventEntityName } from "../../events/definitions/base";
 
 export default class QuizController extends AbstractBaseController<QuizRepositoryType> implements IBaseController<QuizRepositoryType> {
     constructor() {
         super('quiz_id');
+        this.event = EventEntityName.quiz;
     }
 
     generate(quizGenerator: IQuizGenerator, studentModel: StudentModel): RequestHandler {

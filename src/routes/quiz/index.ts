@@ -39,7 +39,7 @@ const v1 = (server: IServer): express.Router => {
     server.router.post(`${ROUTE}/start`, localAuthentication.auth('student', retrieveTokenBearer), quizController.generate(quizGenerator, studentModel));
     server.router.get(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), quizController.findAll(quizModel));
     server.router.get(`${ROUTE}/:quiz_id`, localAuthentication.auth('any', retrieveTokenBearer), quizController.findById(quizModel));
-    server.router.patch(`${ROUTE}/:quiz_id`, localAuthentication.auth('administrator', retrieveTokenBearer), quizController.updateById(quizModel));
+    server.router.patch(`${ROUTE}/:quiz_id`, localAuthentication.auth('student', retrieveTokenBearer), quizController.updateById(quizModel));
     server.router.delete(`${ROUTE}/:quiz_id`, localAuthentication.auth('administrator', retrieveTokenBearer), quizController.deleteById(quizModel));
 
     return server.router;

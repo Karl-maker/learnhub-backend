@@ -5,9 +5,11 @@ export default interface IEmail {
 export type EmailInput<T> = {
     email: string;
     subject: string;
-    template: DefaultTemplate | StudentConfirmationTemplate | StudentOnboardingTemplate;
+    template: AllowedTemplates;
     context: Context<T>;
 };
+
+type AllowedTemplates = DefaultTemplate | StudentConfirmationTemplate | StudentOnboardingTemplate | StudentQuizReportTemplate;
 
 export type Context<T> = T & {
     name: string;
@@ -28,4 +30,16 @@ export type StudentConfirmationContext = {
 export type StudentOnboardingTemplate = 'student-onboarding';
 export type StudentOnboardingContext = {
     school?: string
+};
+
+export type StudentQuizReportTemplate = 'quiz-report';
+export type StudentQuizReportContext = {
+    total_score: number;
+    total_points: number;
+    score: number;
+    quiz_id: string;
+    message: {
+        title: string;
+        note: string;
+    };
 };

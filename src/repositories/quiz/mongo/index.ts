@@ -17,7 +17,8 @@ export class QuizMongoRepository extends Repository.mongo<QuizRepositoryType> {
             }
         ],
         type: { type: String },
-        progress: { type: Boolean }
+        score: { type: Number },
+        complete: { type: Boolean, default: false }
       }, {
         timestamps: { 
             updatedAt: 'updated_at', 
