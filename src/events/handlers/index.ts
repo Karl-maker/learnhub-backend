@@ -1,7 +1,9 @@
 import account from "./account";
+import quiz from "./quiz"
 
 const event = {
-    account
+    account,
+    quiz
 }
 
 export default event;

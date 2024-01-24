@@ -3,9 +3,12 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { FindManyOptions, IBaseModel } from "../../../models/base/interface";
 import IBaseController from "../interface";
+import { EventCreatePayload, EventDeleteByIdPayload, EventUpdateByIdPayload, baseEvent } from "../../../events/definitions/base";
+import event from "../../../helpers/event";
 
 export default abstract class AbstractBaseController<T> implements IBaseController<T> {
     private id: string;
+    public event: string;
     constructor(id: string) {
         this.id = id;
     }
@@ -53,6 +56,8 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = await model.create(req.body);
+                const payload: EventCreatePayload<T> = { data: data }
+                event.publish(baseEvent(this.event).topics.Create, payload);
                 res.json({
                     data
                 });
@@ -65,6 +70,8 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = await model.updateById(req.params[this.id], req.body);
+                const payload: EventUpdateByIdPayload<T> = { success: data.status, data: { response: data.data, request: req.body} }
+                event.publish(baseEvent(this.event).topics.UpdateById, payload);
                 res.json({
                     data
                 });
@@ -105,6 +112,8 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = await model.deleteById(req.params[this.id]);
+                const payload: EventDeleteByIdPayload<T> = { data: data.data, success: data.successful }
+                event.publish(baseEvent(this.event).topics.DeleteById, payload);
                 res.json({
                     data
                 });

@@ -51,6 +51,7 @@ const mongo_db_uri = config.database[config.environment].uri;
 
     // event handlers
     event.account();
+    event.quiz();
 
     // start the server
     server.start(port, () => {

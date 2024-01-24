@@ -1,45 +1,17 @@
-<style>
-    /* Global Styles */
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f8f8f8;
-        color: #333;
-        margin: 0;
-        padding: 0;
-    }
-
-    /* Body Styles */
-    .body-container {
-        padding: 20px;
-    }
-
-    .sender-name {
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .message-content {
-        font-size: 16px;
-    }
-
-    .confirmation-link {
-        color: #007bff;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-</style>
-
 <!-- Body -->
-<div class="body-container">
-    <p class="sender-name">Dear {{name}},</p>
-    <p class="message-content">
-        Welcome to our community! We are delighted to have you on board. To ensure the security of your account, please click the confirmation link below:
-        <br><br>
-        <a class="confirmation-link" href="{{link}}" target="_blank">Confirm Your Account</a>
-        <br><br>
-        If you have any questions or need assistance, feel free to reach out to our support team at {{support_email}}.
-        <br><br>
-        Thank you for choosing [company]. We look forward to providing you with a seamless and rewarding experience.
-    </p>
+<div style="font-family: 'Arial', sans-serif; background-color: #f8f8f8; color: #333; margin: 0; padding: 0;">
+    <div style="padding: 20px;">
+        <p style="font-size: 18px; font-weight: bold;">
+            Dear {{name}},
+        </p>
+        <p style="font-size: 16px;">
+            Welcome to our community! We are delighted to have you on board. To ensure the security of your account, please click the confirmation link below:
+            <br><br>
+            <a href="{{link}}" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">Confirm Your Account</a>
+            <br><br>
+            If you have any questions or need assistance, feel free to reach out to our support team at {{support_email}}.
+            <br><br>
+            Thank you for choosing [company]. We look forward to providing you with a seamless and rewarding experience.
+        </p>
+    </div>
 </div>

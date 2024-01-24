@@ -43,7 +43,7 @@ export default class BasicQuizGenerator implements IQuizGenerator {
                 student_id,
                 questions: quiz_questions,
                 type: 'generated',
-                progress: true
+                complete: false
             });
 
             return quiz;
