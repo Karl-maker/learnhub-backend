@@ -12,4 +12,7 @@ export type StudentRepositoryType = RepositoryDatabaseBaseType & {
         district: string;
     };
     grade?: number;
+    profile?: {
+        picture?: string;
+    };
 }
