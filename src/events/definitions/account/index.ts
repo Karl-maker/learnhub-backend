@@ -12,7 +12,7 @@ const accountEvent = {
 
 export type AccountEventSignUpPayload = {
     ip?: string;
-    account: Partial<AccountRepositoryType>;
+    account: AccountRepositoryType;
 }
 
 export type AccountEventLoginPayload = {

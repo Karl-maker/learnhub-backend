@@ -13,7 +13,7 @@ class S3BlobRepository implements IBlobRepository {
     this.bucketName = bucketName;
   }
 
-  async find(where: Partial<BlobRepositoryType>, options?: RepositoryFindOptions<BlobRepositoryType>): Promise<RepositoryFindResult<BlobRepositoryType>> {
+  async find(where: BlobRepositoryType, options?: RepositoryFindOptions<BlobRepositoryType>): Promise<RepositoryFindResult<BlobRepositoryType>> {
     const listObjectsParams: S3.Types.ListObjectsRequest = {
       Bucket: this.bucketName,
     };
@@ -66,7 +66,7 @@ class S3BlobRepository implements IBlobRepository {
     return { data, amount: data.length };
   }
 
-  async create(data: Partial<BlobRepositoryType>): Promise<BlobRepositoryType> {
+  async create(data: BlobRepositoryType): Promise<BlobRepositoryType> {
     if(!data.id) data.id = uuid();
     
     // Implement your create logic here (e.g., uploading a blob to S3)
@@ -93,14 +93,14 @@ class S3BlobRepository implements IBlobRepository {
     return createdData;
   }
 
-  async update(where: Partial<BlobRepositoryType>, data: Partial<BlobRepositoryType>): Promise<RepositoryUpdateResult> {
+  async update(where: BlobRepositoryType, data: BlobRepositoryType): Promise<RepositoryUpdateResult> {
     // Implement your update logic here (e.g., copying or overwriting an existing S3 object)
     // You may need to handle the case where `where` and `data` specify different S3 objects
     // and update their metadata accordingly
     return { mutated: 0 }; // Placeholder, modify as needed
   }
 
-  async delete(where: Partial<BlobRepositoryType>): Promise<RepositoryDeleteResult> {
+  async delete(where: BlobRepositoryType): Promise<RepositoryDeleteResult> {
     // Implement your delete logic here (e.g., deleting an S3 object)
     // You may need to handle the case where multiple S3 objects are deleted
     const params: S3.Types.DeleteObjectRequest = {

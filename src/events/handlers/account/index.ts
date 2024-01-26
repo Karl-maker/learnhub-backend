@@ -25,7 +25,7 @@ export default () => {
                 const accountLoginModel = new AccountLoginModel(accountLoginRepository);
                 const accountModel = new AccountModel(accountRepository);
     
-                let account: Partial<AccountRepositoryType> = {};
+                let account: AccountRepositoryType;
     
                 if(payload.account.email) account = await accountModel.findOne({ email: payload.account.email });
                 else if(payload.account.mobile) account = await accountModel.findOne({ mobile: payload.account.mobile });

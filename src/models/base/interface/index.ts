@@ -10,25 +10,25 @@ export interface IBaseModel<T> {
     repository: IRepository<T>;
 
     // Method to create a new data entry.
-    create(data: Partial<T>): Promise<Partial<T>>;
+    create(data: Partial<T>): Promise<T>;
 
     // Method to find a data entry by its unique identifier.
-    findById(id: string): Promise<Partial<T>>;
+    findById(id: string): Promise<T>;
 
     // Method to find one data entry based on specified criteria.
-    findOne(where: Partial<T>): Promise<Partial<T>>;
+    findOne(where: Partial<T>): Promise<T>;
 
     // Method to find multiple data entries based on specified criteria.
     findMany(where: Partial<T>, options: FindManyOptions<T>): Promise<ModelFindManyResult<T>>;
 
     // Method to update a data entry by its unique identifier.
-    updateById(id: string, update: Partial<T>): Promise<ModelUpdateByIdResult<T>>;
+    updateById(id: string, update: T): Promise<ModelUpdateByIdResult<T>>;
 
     // Method to update one data entry based on specified criteria.
-    updateOne(where: Partial<T>, update: Partial<T>): Promise<Partial<T>>;
+    updateOne(where: Partial<T>, update: T): Promise<T>;
 
     // Method to update multiple data entries based on specified criteria.
-    updateMany(where: Partial<T>, update: Partial<T>): Promise<ModelUpdateManyResult>;
+    updateMany(where: Partial<T>, update: T): Promise<ModelUpdateManyResult>;
 
     // Method to delete a data entry by its unique identifier.
     deleteById(id: string): Promise<ModelDeleteByIdResult<T>>;
@@ -47,13 +47,13 @@ export type ModelDeleteManyResult = {
 
 // Result type for the updateById method, indicating the updated data and status.
 export type ModelUpdateByIdResult<T> = {
-    data: Partial<T>;
+    data: T;
     status: boolean;
 }
 
 // Result type for the deleteById method, indicating the deleted data and success status.
 export type ModelDeleteByIdResult<T> = {
-    data: Partial<T>;
+    data: T;
     successful: boolean;
 }
 
@@ -62,7 +62,7 @@ export type ModelDeleteOneResult<T> = ModelDeleteByIdResult<T>;
 
 // Result type for the findMany method, including retrieved data and the total amount.
 export type ModelFindManyResult<T> = {
-    data: Partial<T>[];
+    data: T[];
     amount: number;
 }
 

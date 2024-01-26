@@ -26,7 +26,7 @@ describe('AccountMockRepository', () => {
   });
 
   test('create method adds a new account', async () => {
-    const newData: Partial<AccountRepositoryType> = {
+    const newData: AccountRepositoryType = {
       first_name: 'Jane',
       last_name: 'Doe',
       email: 'jane.doe@example.com',
@@ -40,7 +40,7 @@ describe('AccountMockRepository', () => {
   });
 
   test('update method modifies existing account', async () => {
-    const updateData: Partial<AccountRepositoryType> = {
+    const updateData: AccountRepositoryType = {
       first_name: 'UpdatedName',
     };
 

@@ -44,7 +44,7 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
                 delete req.query.page_size;
                 delete req.query.page;
 
-                const findManyWhere: Partial<T> = req.query as Partial<T>;
+                const findManyWhere: T = req.query as T;
                 const result = await model.findMany(findManyWhere, findManyOptions);
                 res.json(result);
             } catch(err) {
@@ -86,7 +86,7 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
                 // Initialize the response array
                 let response: { id: string, result: boolean }[] = [];
                 const listOfIds: string[] = req.body.list;
-                const update: Partial<T> = req.body.update as Partial<T>; // Cast update to Partial<T>
+                const update: T = req.body.update as T; // Cast update to T
     
                 // Use Promise.all to wait for all updateById calls to complete
                 await Promise.all(listOfIds.map(async (id: string) => {
