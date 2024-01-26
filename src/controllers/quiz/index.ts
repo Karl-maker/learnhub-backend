@@ -18,10 +18,13 @@ export default class QuizController extends AbstractBaseController<QuizRepositor
             try{
                 const account: AuthAccountPayload | null = req['account'];
                 const topic: string = String(req.body.topic);
+                const number_of_questions = Number(req.body.no_of_questions || 5);
+                const range = Number(req.body.range || 5);
+                const difficulty = Number(req.body.difficulty)
                 const student = await studentModel.findOne({
                     account_id: account.id
                 })
-                const quiz = await quizGenerator.generate(student.id, topic);
+                const quiz = await quizGenerator.generate(student.id, topic, number_of_questions || 5, difficulty, range);
                 res.json({
                     data: quiz
                 });

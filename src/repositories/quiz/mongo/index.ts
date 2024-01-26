@@ -14,6 +14,7 @@ export class QuizMongoRepository extends Repository.mongo<QuizRepositoryType> {
                 earned_marks: { type: Number },
                 complete: { type: Boolean },
                 message: { type: String },
+                tier_level: { type: Number }
             }
         ],
         type: { type: String },

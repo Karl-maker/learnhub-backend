@@ -2,7 +2,15 @@ import { MediaTypes } from "../../../utils/media/types";
 import { RepositoryDatabaseBaseType } from "../../base/interface";
 import { IRepository } from "../../base/interface";
 
-export interface IQuestionRepository extends IRepository<QuestionRepositoryType> {}
+export interface IQuestionRepository extends IRepository<QuestionRepositoryType> {
+    findByTierLevel(where: Partial<QuestionRepositoryType>, options: QuestionFindByTierLevel): Promise<QuestionRepositoryType[]>;
+}
+
+export type QuestionFindByTierLevel = {
+    tier_level: number;
+    range: number;
+    amount: number;
+}
 export type QuestionRepositoryType = RepositoryDatabaseBaseType & {
     name: string; 
     description: string;

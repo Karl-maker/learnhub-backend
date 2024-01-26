@@ -24,10 +24,9 @@ const v1 = (server: IServer): express.Router => {
     const quizRepository: IQuizRepository = QuizRepository.mock;
     const quizModel = new QuizModel(quizRepository);
     const questionRepository: IQuestionRepository = QuestionRepository.mock;
-    const questionModel = new QuestionModel(questionRepository)
     const studentRepository: IStudentRepository = StudentRepository.mock;
     const studentModel = new StudentModel(studentRepository)
-    const quizGenerator: IQuizGenerator = new BasicQuizGenerator(quizModel, questionModel);
+    const quizGenerator: IQuizGenerator = new BasicQuizGenerator(quizRepository, questionRepository);
     /**
      * @todo use proper keys from config
      */
