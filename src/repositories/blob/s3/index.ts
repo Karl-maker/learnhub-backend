@@ -66,7 +66,7 @@ class S3BlobRepository implements IBlobRepository {
     return { data, amount: data.length };
   }
 
-  async create(data: BlobRepositoryType): Promise<BlobRepositoryType> {
+  async create(data: Partial<BlobRepositoryType>): Promise<BlobRepositoryType> {
     if(!data.id) data.id = uuid();
     
     // Implement your create logic here (e.g., uploading a blob to S3)
