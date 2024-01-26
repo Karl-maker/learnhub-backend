@@ -16,6 +16,7 @@ export type QuizQuestion = {
     earned_marks: number;
     completed: boolean;
     message?: string;
+    tier_level: number;
 }
 
 export type QuizType = 'generated';

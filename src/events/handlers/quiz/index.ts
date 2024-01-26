@@ -135,7 +135,7 @@ export default () => {
                         quiz_id: payload.data.response.id,
                         total_points,
                         total_score,
-                        score: score <= 0 ? 0 : score * 100,
+                        score: score <= 0 ? 0 : Math.round(score * 100),
                         message
                     }
                 });
