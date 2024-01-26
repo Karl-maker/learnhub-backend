@@ -16,7 +16,7 @@ class FileSystemBlobRepository implements IBlobRepository {
     this.basePath = basePath;
   }
 
-  async find(where: Partial<BlobRepositoryType>, options?: RepositoryFindOptions<BlobRepositoryType>): Promise<RepositoryFindResult<BlobRepositoryType>> {
+  async find(where: BlobRepositoryType, options?: RepositoryFindOptions<BlobRepositoryType>): Promise<RepositoryFindResult<BlobRepositoryType>> {
     const files = await readdirAsync(this.basePath);
 
     const filteredFiles = files.filter((fileName) => {
@@ -65,7 +65,7 @@ class FileSystemBlobRepository implements IBlobRepository {
     return { data, amount: data.length };
   }
 
-  async create(data: Partial<BlobRepositoryType>): Promise<BlobRepositoryType> {
+  async create(data: BlobRepositoryType): Promise<BlobRepositoryType> {
     // Implement your create logic here (e.g., writing a buffer to a file)
     if(!data.id) data.id = uuid();
     const filePath = path.join(this.basePath, data.id + data.ext);
@@ -86,14 +86,14 @@ class FileSystemBlobRepository implements IBlobRepository {
     return createdData;
   }
 
-  async update(where: Partial<BlobRepositoryType>, data: Partial<BlobRepositoryType>): Promise<RepositoryUpdateResult> {
+  async update(where: BlobRepositoryType, data: BlobRepositoryType): Promise<RepositoryUpdateResult> {
     // Implement your update logic here (e.g., copying or overwriting an existing file)
     // You may need to handle the case where `where` and `data` specify different files
     // and update their metadata accordingly
     return { mutated: 0 }; // Placeholder, modify as needed
   }
 
-  async delete(where: Partial<BlobRepositoryType>): Promise<RepositoryDeleteResult> {
+  async delete(where: BlobRepositoryType): Promise<RepositoryDeleteResult> {
     // Implement your delete logic here (e.g., deleting a file)
     // You may need to handle the case where multiple files are deleted
     const filePath = path.join(this.basePath, where.id + where.ext);

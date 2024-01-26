@@ -11,17 +11,17 @@ export const baseEvent = (e: string) => {
 export type EventUpdateByIdPayload<T> = {
     success: boolean;
     data: {
-        response: Partial<T>;
-        request: Partial<T>;
+        response: T;
+        request: T;
     };
 }
 
 export type EventCreatePayload<T> = {
-    data: Partial<T>;
+    data: T;
 }
 
 export type EventDeleteByIdPayload<T> = {
-    data: Partial<T>;
+    data: T;
     success: boolean;
 }
 

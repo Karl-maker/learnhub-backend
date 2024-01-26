@@ -3,10 +3,10 @@ import { RepositoryDatabaseBaseType } from "../../base/interface";
 import { IRepository } from "../../base/interface";
 
 export interface IQuestionRepository extends IRepository<QuestionRepositoryType> {
-    findByTierLevel(where: Partial<QuestionRepositoryType>, options: QuestionFindByTierLevel): Promise<QuestionRepositoryType[]>;
+    findByDifficulty(where: Partial<QuestionRepositoryType>, options: QuestionfindByDifficulty): Promise<QuestionRepositoryType[]>;
 }
 
-export type QuestionFindByTierLevel = {
+export type QuestionfindByDifficulty = {
     tier_level: number;
     range: number;
     amount: number;

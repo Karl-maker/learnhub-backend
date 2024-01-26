@@ -15,18 +15,18 @@ export default class BasicQuizGenerator implements IQuizGenerator {
         this.quizRepository = quizRepository;
     }
 
-    async generate(student_id: string, topic?: string, no_of_questions: number = 5, difficulty: number = 1, range = 5): Promise<Partial<QuizRepositoryType>> {
+    async generate(student_id: string, topic?: string, no_of_questions: number = 5, difficulty: number = 1, range = 5): Promise<QuizRepositoryType> {
         try {
             
-            const where: Partial<QuizRepositoryType> | {} = {};
+            const where: Partial<QuestionRepositoryType> | {} = {};
             if(topic) where['topic'] = topic;
-            const questions = await this.questionRepository.findByTierLevel(where, {
+            const questions = await this.questionRepository.findByDifficulty(where, {
                 amount: no_of_questions,
                 tier_level: difficulty,
                 range
             });
 
-            const quiz_questions_randomizer: Partial<QuestionRepositoryType>[] = this.getRandomQuestions(questions, no_of_questions, difficulty, range);
+            const quiz_questions_randomizer: QuestionRepositoryType[] = this.getRandomQuestions(questions, no_of_questions, difficulty, range);
             const quiz_questions: QuizQuestion[] = [];
             
             quiz_questions_randomizer.forEach((question) => {
@@ -53,7 +53,7 @@ export default class BasicQuizGenerator implements IQuizGenerator {
         }
     }
     
-    getRandomQuestions(questions: Partial<QuestionRepositoryType>[], x: number, difficulty: number, range: number = 3): Partial<QuestionRepositoryType>[] {
+    getRandomQuestions(questions: QuestionRepositoryType[], x: number, difficulty: number, range: number = 3): QuestionRepositoryType[] {
         if(questions.length < 1) return [];
         if (x >= questions.length) {
             // If x is greater than or equal to the number of questions, repeat questions as needed

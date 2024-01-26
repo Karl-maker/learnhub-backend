@@ -15,7 +15,7 @@ export default class LocalSignup implements ISignupService<LocalSignupType> {
         this.accountModel = accountModel;
     }
 
-    async signup(data: LocalSignupType): Promise<Partial<AccountRepositoryType>> {
+    async signup(data: LocalSignupType): Promise<AccountRepositoryType> {
         try {
 
             if(data.email) {
