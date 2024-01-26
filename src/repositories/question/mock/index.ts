@@ -5,7 +5,7 @@ export class QuestionMockRepository extends MockDatabaseRepository<QuestionRepos
     constructor(data: QuestionRepositoryType[]) {
         super(data);
     }
-    async findByTierLevel(where: Partial<QuestionRepositoryType>, options: {
+    async findByDifficulty(where: Partial<QuestionRepositoryType>, options: {
         amount: number,
         tier_level: number,
         range: number

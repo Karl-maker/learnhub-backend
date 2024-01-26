@@ -10,7 +10,7 @@ export abstract class MockDatabaseRepository<T extends RepositoryDatabaseBaseTyp
     this.data = data;
   }
 
-  async find(where: Partial<T>, options?: RepositoryFindOptions<T>): Promise<RepositoryFindResult<T>> {
+  async find(where: T, options?: RepositoryFindOptions<T>): Promise<RepositoryFindResult<T>> {
     // Mock implementation for the find method
     const filteredData = this.data.filter(item => {
       for (const key in where) {
@@ -46,7 +46,7 @@ export abstract class MockDatabaseRepository<T extends RepositoryDatabaseBaseTyp
     };
   }
 
-  async create(data: Partial<T>): Promise<T> {
+  async create(data: T): Promise<T> {
 
     data.id = uuid();
     data.created_at = new Date();
@@ -58,7 +58,7 @@ export abstract class MockDatabaseRepository<T extends RepositoryDatabaseBaseTyp
     return newItem;
   }
 
-  async update(where: Partial<T>, data: Partial<T>): Promise<RepositoryUpdateResult> {
+  async update(where: T, data: T): Promise<RepositoryUpdateResult> {
     // Mock implementation for the update method
     const updatedItems = this.data.filter(item => {
       for (const key in where) {
@@ -75,7 +75,7 @@ export abstract class MockDatabaseRepository<T extends RepositoryDatabaseBaseTyp
     };
   }
 
-  async delete(where: Partial<T>): Promise<RepositoryDeleteResult> {
+  async delete(where: T): Promise<RepositoryDeleteResult> {
         // Mock implementation for the delete method
         const initialLength = this.data.length;
 

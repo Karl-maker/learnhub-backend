@@ -12,9 +12,9 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
         this.repository = repository;
     }
 
-    async create(data: Partial<T>): Promise<Partial<T>> {
+    async create(data: Partial<T>): Promise<T> {
         try {
-            const result = await this.repository.create(data);
+            const result = await this.repository.create(data as T);
             return {
                 ...result
             }
@@ -22,9 +22,9 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
             throw err;
         }
     }
-    async findById(id: string): Promise<Partial<T>> {
+    async findById(id: string): Promise<T> {
         try {
-            const where: Partial<T> = { id } as unknown as Partial<T>;
+            const where: T = { id } as unknown as T;
             const result = await this.repository.find(where, {
                 sort: {
                     direction: 'asc',
@@ -40,7 +40,7 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
             throw err;
         }
     }
-    async findOne(where: Partial<T>): Promise<Partial<T>> {
+    async findOne(where: Partial<T>): Promise<T> {
         try {
             const result = await this.repository.find(where, {
                 sort: {
@@ -81,7 +81,7 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
     }
     async updateById(id: string, update: Partial<T>): Promise<ModelUpdateByIdResult<T>> {
         try {
-            const where: Partial<T> = { id } as unknown as Partial<T>;
+            const where: T = { id } as unknown as T;
             const result = await this.repository.update(where, update);
             const data = await this.repository.find(where, {
                 sort: {
@@ -101,7 +101,7 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
             throw err;
         }
     }
-    updateOne(where: Partial<T>, update: Partial<T>): Promise<Partial<T>> {
+    updateOne(where: Partial<T>, update: Partial<T>): Promise<T> {
         throw new Error("Method not implemented.");
     }
     updateMany(where: Partial<T>, update: Partial<T>): Promise<ModelUpdateManyResult> {

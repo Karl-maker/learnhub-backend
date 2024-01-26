@@ -9,7 +9,7 @@ const studentEvent = {
 }
 
 export type StudentEventCreatePayload = {
-    student: Partial<StudentRepositoryType>,
+    student: StudentRepositoryType,
 }
 
 export {

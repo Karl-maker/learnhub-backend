@@ -8,7 +8,7 @@ export abstract class MongoRepository<T> implements IRepository<T> {
     this.model = model;
   }
 
-  async find(where: Partial<T>, options?: RepositoryFindOptions<T>): Promise<RepositoryFindResult<T>> {
+  async find(where: T, options?: RepositoryFindOptions<T>): Promise<RepositoryFindResult<T>> {
     const query = this.model.find(where as FilterQuery<T>);
 
     // Apply sorting if specified
@@ -29,12 +29,12 @@ export abstract class MongoRepository<T> implements IRepository<T> {
     return { data, amount };
   }
 
-  async create(data: Partial<T>): Promise<T> {
+  async create(data: T): Promise<T> {
     const createdData = await this.model.create(data);
     return createdData.toObject() as T;
   }
 
-  async update(where: Partial<T>, data: Partial<T>): Promise<RepositoryUpdateResult> {
+  async update(where: T, data: T): Promise<RepositoryUpdateResult> {
     const result = await this.model.findOneAndUpdate(
       where as mongoose.FilterQuery<T>,
       { $set: data } as any,
@@ -47,7 +47,7 @@ export abstract class MongoRepository<T> implements IRepository<T> {
     return { mutated };
   }
 
-  async delete(where: Partial<T>): Promise<RepositoryDeleteResult> {
+  async delete(where: T): Promise<RepositoryDeleteResult> {
     const result = await this.model.deleteMany(where as FilterQuery<T>);
     return { deleted: result.deletedCount || 0 };
   }

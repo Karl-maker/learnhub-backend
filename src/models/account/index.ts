@@ -12,7 +12,7 @@ export default class AccountModel extends AbstractBaseModel<AccountRepositoryTyp
      * @override to make password hashed
      */
 
-    async create(data: Partial<AccountRepositoryType>): Promise<Partial<AccountRepositoryType>> {
+    async create(data: Partial<AccountRepositoryType>): Promise<AccountRepositoryType> {
         const hash_password = await hashPassword(data.hash_password);
         const result = await this.repository.create({
             ...data,
