@@ -89,7 +89,7 @@ class FileSystemBlobRepository implements IBlobRepository {
     const createdData: BlobRepositoryType = {
       id: data.id,
       key: data.id,
-      file_name: data.file_name,
+      file_name: `${data.id}${data.ext}`,
       created_at: new Date(),
       updated_at: new Date(),
       location: `${this.baseURL}/${data.id}${data.ext}`, // Adding the location property
