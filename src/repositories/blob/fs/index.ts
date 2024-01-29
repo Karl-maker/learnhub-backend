@@ -57,7 +57,7 @@ class FileSystemBlobRepository implements IBlobRepository {
               v: 1, // Assuming a default version
               created_at: stats.birthtime,
               updated_at: stats.mtime,
-              location: filePath,
+              location: `${this.baseURL}/${fileId}${fileExtension}`,
               ext: fileExtension,
               file_name: fileName
             });

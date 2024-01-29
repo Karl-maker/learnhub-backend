@@ -15,6 +15,7 @@ import subject from "./routes/subject";
 import subsubject from "./routes/sub-subject";
 import topic from "./routes/topic";
 import topic_progression from "./routes/topic-progression"
+import content from "./routes/content";
 import event from "./events/handlers";
 import path from "path";
 
@@ -46,7 +47,9 @@ const fileRepositoryPath = path.resolve(__dirname, `../${config.fs.bucket}`);
       subject.v1(server),
       subsubject.v1(server),
       topic.v1(server),
-      topic_progression.v1(server)
+      topic_progression.v1(server),
+      content.v1(server),
+
     )
     server.app.use(error404)
     server.app.use(errorHandler);
