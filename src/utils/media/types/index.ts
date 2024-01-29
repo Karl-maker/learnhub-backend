@@ -1,1 +1,1 @@
-export type MediaTypes = 'mp4' | 'mp3' | 'text' | 'png' | 'jpeg' | 'gif';
+export type MediaTypes = "video" | "image" | "audio" | "document" | "text";
