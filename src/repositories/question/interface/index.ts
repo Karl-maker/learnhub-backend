@@ -25,6 +25,8 @@ export type QuestionRepositoryType = RepositoryDatabaseBaseType & {
 export type ContentType = {
     type: MediaTypes;
     url?: string;
+    ext?: string;
+    id?: string;
     text?: string;
 }
 
