@@ -24,19 +24,10 @@ const v1 = (server: IServer): express.Router => {
     const localAuthentication = new LocalAuthentication(accessJwt);
     const retrieveTokenBearer = new RetrieveBearerTokenFromRequest();
 
-    server.router.post(`${ROUTE}`, 
-    //localAuthentication.auth('administrator', retrieveTokenBearer), 
-    upload.single('content'),
-    contentController.create(contentModel));
-    server.router.get(`${ROUTE}`, 
-    //localAuthentication.auth('administrator', retrieveTokenBearer), 
-    contentController.findAll(contentModel));
-    server.router.get(`${ROUTE}/:content_id`, 
-    //localAuthentication.auth('administrator', retrieveTokenBearer), 
-    contentController.findById(contentModel));
-    server.router.delete(`${ROUTE}/:content_id`, 
-    //localAuthentication.auth('administrator', retrieveTokenBearer), 
-    contentController.deleteById(contentModel));
+    server.router.post(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), upload.single('content'), contentController.create(contentModel));
+    server.router.get(`${ROUTE}`, localAuthentication.auth('administrator', retrieveTokenBearer), contentController.findAll(contentModel));
+    server.router.get(`${ROUTE}/:content_id`, localAuthentication.auth('administrator', retrieveTokenBearer), contentController.findById(contentModel));
+    server.router.delete(`${ROUTE}/:content_id`, localAuthentication.auth('administrator', retrieveTokenBearer), contentController.deleteById(contentModel));
 
     return server.router;
 }
