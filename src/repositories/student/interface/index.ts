@@ -14,5 +14,6 @@ export type StudentRepositoryType = RepositoryDatabaseBaseType & {
     grade?: number;
     profile?: {
         picture?: string;
+        id?: string;
     };
 }

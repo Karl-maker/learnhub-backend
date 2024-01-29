@@ -6,7 +6,7 @@ import IBaseController from "../base/interface";
 import event from "../../helpers/event";
 import { AuthAccountPayload } from "../../middlewares/authenticate/interface";
 import StudentModel from "../../models/student";
-import IUpload from "../../service/upload/interface";
+import IUpload, { UploadCallback } from "../../service/upload/interface";
 
 export default class StudentController extends AbstractBaseController<StudentRepositoryType> implements IBaseController<StudentRepositoryType> {
     constructor() {
@@ -87,17 +87,23 @@ export default class StudentController extends AbstractBaseController<StudentRep
             try {
                 const account: AuthAccountPayload | null = req['account'];
                 const data: Express.Multer.File = req.file;
-                uploadService.upload(data, (location: string) => {
+                uploadService.upload(data, (data: UploadCallback) => {
                     (async () => {
                         const student = await studentService.findById(account.id);
+
                         await studentService.updateOne({
                             account_id: account.id 
                         }, {
                             profile: {
                                 ...student.profile,
-                                picture: location
+                                picture: data.location,
+                                id: data.key
                             }
                         });
+
+                        if(student.profile?.id) {
+                            await uploadService.remove(student.profile.id);
+                        }
                     })();
                 })
 

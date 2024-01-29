@@ -87,6 +87,7 @@ class S3BlobRepository implements IBlobRepository {
       updated_at: new Date(),
       location: uploadResponse.Location, // Adding the location property
       ext: data.ext,
+      key: data.id,
       v: 1
     };
 
@@ -100,7 +101,7 @@ class S3BlobRepository implements IBlobRepository {
     return { mutated: 0 }; // Placeholder, modify as needed
   }
 
-  async delete(where: BlobRepositoryType): Promise<RepositoryDeleteResult> {
+  async delete(where: Partial<BlobRepositoryType>): Promise<RepositoryDeleteResult> {
     // Implement your delete logic here (e.g., deleting an S3 object)
     // You may need to handle the case where multiple S3 objects are deleted
     const params: S3.Types.DeleteObjectRequest = {
