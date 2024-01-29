@@ -1,16 +1,16 @@
 import path from "path";
-import { BlobRepositoryType } from "../../../repositories/blob/interface";
+import { BlobRepositoryType, IBlobRepository } from "../../../repositories/blob/interface";
 import { S3BlobRepository } from "../../../repositories/blob/s3";
 import IUpload, { UploadCallback } from "../interface";
 import { Express } from 'express';
 import logger from "../../../helpers/logger";
 
-export default class s3Upload implements IUpload {
-    private repository: S3BlobRepository;
-    constructor(repository: S3BlobRepository) {
+export default class Upload implements IUpload {
+    private repository: IBlobRepository;
+    constructor(repository: IBlobRepository) {
         this.repository = repository;
     }
-    async upload(file: Express.Multer.File, callback: (data: UploadCallback) => void): Promise<void> {
+    async upload(file: Express.Multer.File, callback: (data: UploadCallback) => void, error: (err: Error) => void): Promise<void> {
         try {
             const fileNameWithExtension = file.originalname;
             const fileNameWithoutExtension = path.parse(fileNameWithExtension).name;
@@ -28,17 +28,19 @@ export default class s3Upload implements IUpload {
             // Call the callback with the result
             callback({
                 location: result.location,
-                key: result.key
+                key: result.key,
+                ext: result.ext
             });
 
         } catch(err) {
-            throw err;
+            error(new Error(err));
         }
     }
-    async remove(key: string): Promise<void> {
+    async remove(key: string, ext?: string): Promise<void> {
         try {
             await this.repository.delete({
-                id: key
+                id: key,
+                ext: ext || ""
             });
         } catch(err) {
             logger.error('Issue removing s3 object', err);

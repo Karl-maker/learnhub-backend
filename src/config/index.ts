@@ -10,6 +10,14 @@ export default {
     domain: {
       url: env.DOMAIN_URL || `http://localhost:${Number(env.PORT) || 3000}`,
     },
+    fs: {
+      bucket: 'file_repository',
+      /**
+       * @note when changing route change url's end route as well to match ;)
+       */
+      route: '/fs',
+      url: `${env.DOMAIN_URL || `http://localhost:${Number(env.PORT) || 3000}`}/fs`
+    },
     token: {
       iss: 'StudentLearningltm'
     },

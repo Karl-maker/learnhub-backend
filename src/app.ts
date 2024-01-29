@@ -16,13 +16,14 @@ import subsubject from "./routes/sub-subject";
 import topic from "./routes/topic";
 import topic_progression from "./routes/topic-progression"
 import event from "./events/handlers";
+import path from "path";
 
 const app = express();
 const port = config.port;
 const server: IServer = new ExpressServer(app);
 const mongo = MongoDBConnector;
 const mongo_db_uri = config.database[config.environment].uri;
-
+const fileRepositoryPath = path.resolve(__dirname, `../${config.fs.bucket}`);
 
 (async() => {
     // await mongo.connect(mongo_db_uri, {
@@ -34,6 +35,7 @@ const mongo_db_uri = config.database[config.environment].uri;
     // });
 
     server.app.use(express.json())
+    server.app.use(config.fs.route, express.static(fileRepositoryPath));
     server.app.use(`/api/v1`,
       account.v1(server),
       account_login.v1(server),
@@ -52,6 +54,7 @@ const mongo_db_uri = config.database[config.environment].uri;
     // event handlers
     event.account();
     event.quiz();
+    event.student();
 
     // start the server
     server.start(port, () => {

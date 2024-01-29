@@ -101,8 +101,25 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
             throw err;
         }
     }
-    updateOne(where: Partial<T>, update: Partial<T>): Promise<T> {
-        throw new Error("Method not implemented.");
+    async updateOne(where: Partial<T>, update: Partial<T>): Promise<T> {
+        try {
+            await this.repository.update(where, update);
+            const data = await this.repository.find(where, {
+                sort: {
+                    direction: 'asc',
+                    field: 'created_at'
+                },
+                pagination: {
+                    size: 1,
+                    page: 1
+                }
+            });
+            return {
+                ...data.data[0]
+            }
+        } catch(err) {
+            throw err;
+        }
     }
     updateMany(where: Partial<T>, update: Partial<T>): Promise<ModelUpdateManyResult> {
         throw new Error("Method not implemented.");
