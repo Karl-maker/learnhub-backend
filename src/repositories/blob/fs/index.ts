@@ -4,6 +4,8 @@ import { v4 as uuid } from 'uuid';
 import { IBlobRepository, BlobRepositoryType } from '../interface';
 import { promisify } from 'util';
 import { RepositoryFindOptions, RepositoryFindResult, RepositoryUpdateResult, RepositoryDeleteResult } from '../../base/interface';
+import config from '../../../config';
+import logger from '../../../helpers/logger';
 
 const writeFileAsync = promisify(fs.writeFile);
 const statAsync = promisify(fs.stat);
@@ -11,9 +13,15 @@ const readdirAsync = promisify(fs.readdir);
 
 class FileSystemBlobRepository implements IBlobRepository {
   private basePath: string;
+  private baseURL: string;
 
-  constructor(basePath: string) {
+  constructor(basePath: string, baseURL: string = `${config.fs.url}`) {
     this.basePath = basePath;
+    this.baseURL = baseURL;
+
+    if (!fs.existsSync(basePath)) {
+      fs.mkdirSync(basePath, { recursive: true });
+    }
   }
 
   async find(where: BlobRepositoryType, options?: RepositoryFindOptions<BlobRepositoryType>): Promise<RepositoryFindResult<BlobRepositoryType>> {
@@ -70,15 +78,21 @@ class FileSystemBlobRepository implements IBlobRepository {
     if(!data.id) data.id = uuid();
     const filePath = path.join(this.basePath, data.id + data.ext);
 
-    await writeFileAsync(filePath, data.buffer);
+    try {
+      await writeFileAsync(filePath, data.buffer);
+    } catch (error) {
+      logger.error(`Error writing file: ${error.message}`, error);
+      throw error
+    }
 
     // Assuming BlobRepositoryType properties are filled after writing to the file
     const createdData: BlobRepositoryType = {
       id: data.id,
+      key: data.id,
       file_name: data.file_name,
       created_at: new Date(),
       updated_at: new Date(),
-      location: filePath, // Adding the location property
+      location: `${this.baseURL}/${data.id}${data.ext}`, // Adding the location property
       ext: data.ext,
       v: 1
     };

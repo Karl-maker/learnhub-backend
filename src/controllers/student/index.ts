@@ -1,12 +1,15 @@
 import { NextFunction, RequestHandler, Request, Response } from "express";
-import { studentEvent, StudentEventCreatePayload } from "../../events/definitions/student";
+import { studentEvent, StudentEventCreatePayload, StudentEventUpdateProfilePicturePayload } from "../../events/definitions/student";
 import { StudentRepositoryType } from "../../repositories/student/interface";
 import AbstractBaseController from "../base/abstract";
 import IBaseController from "../base/interface";
 import event from "../../helpers/event";
 import { AuthAccountPayload } from "../../middlewares/authenticate/interface";
 import StudentModel from "../../models/student";
-import IUpload from "../../service/upload/interface";
+import IUpload, { UploadCallback } from "../../service/upload/interface";
+import NotFoundError from "../../utils/error/not-found";
+import InternalServerError from "../../utils/error/internal-server";
+import logger from "../../helpers/logger";
 
 export default class StudentController extends AbstractBaseController<StudentRepositoryType> implements IBaseController<StudentRepositoryType> {
     constructor() {
@@ -87,18 +90,61 @@ export default class StudentController extends AbstractBaseController<StudentRep
             try {
                 const account: AuthAccountPayload | null = req['account'];
                 const data: Express.Multer.File = req.file;
-                uploadService.upload(data, (location: string) => {
-                    (async () => {
-                        const student = await studentService.findById(account.id);
+                uploadService.upload(data, (data: UploadCallback) => {
+                    (async () => {                        
+                        const student = await studentService.findOne({ account_id: account.id });
+                        let old_data: { url: string; id: string; ext: string; };
+
+                        const doesStudentHaveProfileImage: boolean = student.profile?.picture ? true : false;
+
+                        if(doesStudentHaveProfileImage) {
+                            old_data = {
+                                url: student.profile.picture.url,
+                                id: student.profile.picture.id,
+                                ext: student.profile.picture.ext
+                            }
+                        }
+
+                        if(!student) {
+                            throw new InternalServerError('No student found');
+                        }
+
                         await studentService.updateOne({
                             account_id: account.id 
                         }, {
                             profile: {
-                                ...student.profile,
-                                picture: location
+                                picture: {
+                                    url: data.location,
+                                    id: data.key,
+                                    ext: data.ext
+                                }
                             }
                         });
+
+                        if(doesStudentHaveProfileImage) {
+                            const payload: StudentEventUpdateProfilePicturePayload = {
+                                student: {
+                                    id: student.id
+                                },
+                                picture: {
+                                    new: {
+                                        url: student.profile.picture.url,
+                                        id: student.profile.picture.id,
+                                        ext: student.profile.picture.ext
+                                    },
+                                    old: {
+                                        url: old_data.url,
+                                        id: old_data.id,
+                                        ext: old_data.ext
+                                    }
+                                }
+                            }
+                            event.publish(studentEvent.topics.StudentProfileImageUpdate, payload)
+                        }
+
                     })();
+                }, (err: Error) => {
+                    logger.error(`Issue occured uploading student image`, err);
                 })
 
                 res.json({

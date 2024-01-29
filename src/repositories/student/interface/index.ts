@@ -13,6 +13,10 @@ export type StudentRepositoryType = RepositoryDatabaseBaseType & {
     };
     grade?: number;
     profile?: {
-        picture?: string;
+        picture?: {
+            id: string;
+            ext: string;
+            url: string;
+        }
     };
 }

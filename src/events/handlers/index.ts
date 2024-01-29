@@ -1,9 +1,11 @@
 import account from "./account";
 import quiz from "./quiz"
+import student from "./student"
 
 const event = {
     account,
-    quiz
+    quiz,
+    student
 }
 
 export default event;

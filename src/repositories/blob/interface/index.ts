@@ -8,5 +8,6 @@ export type BlobRepositoryType = RepositoryDatabaseBaseType & {
     buffer?: Buffer | null;
     ext: string;
     file_name: string;
+    key?: string;
 }
 
