@@ -57,7 +57,7 @@ class FileSystemBlobRepository implements IBlobRepository {
               v: 1, // Assuming a default version
               created_at: stats.birthtime,
               updated_at: stats.mtime,
-              location: filePath,
+              location: `${this.baseURL}/${fileId}${fileExtension}`,
               ext: fileExtension,
               file_name: fileName
             });
@@ -89,7 +89,7 @@ class FileSystemBlobRepository implements IBlobRepository {
     const createdData: BlobRepositoryType = {
       id: data.id,
       key: data.id,
-      file_name: data.file_name,
+      file_name: `${data.id}${data.ext}`,
       created_at: new Date(),
       updated_at: new Date(),
       location: `${this.baseURL}/${data.id}${data.ext}`, // Adding the location property

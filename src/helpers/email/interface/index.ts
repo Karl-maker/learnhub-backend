@@ -9,7 +9,7 @@ export type EmailInput<T> = {
     context: Context<T>;
 };
 
-type AllowedTemplates = DefaultTemplate | StudentConfirmationTemplate | StudentOnboardingTemplate | StudentQuizReportTemplate;
+type AllowedTemplates = DefaultTemplate | StudentConfirmationTemplate | StudentOnboardingTemplate | StudentQuizReportTemplate | AccountRecoveryPinTemplate;
 
 export type Context<T> = T & {
     name: string;
@@ -42,4 +42,10 @@ export type StudentQuizReportContext = {
         title: string;
         note: string;
     };
+};
+
+export type AccountRecoveryPinTemplate = 'account-recovery-pin';
+export type AccountRecoveryPinContext = {
+    pin: string;
+    expires_in: string;
 };

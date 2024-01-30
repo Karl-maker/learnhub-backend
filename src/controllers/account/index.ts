@@ -1,13 +1,16 @@
 import config from "../../config";
 import { AccountEventLoginPayload, AccountEventSignUpPayload, accountEvent } from "../../events/definitions/account";
 import event from "../../helpers/event";
+import logger from "../../helpers/logger";
 import { AuthAccountPayload } from "../../middlewares/authenticate/interface";
 import AccountModel from "../../models/account";
 import { AccountLoginMethodsType } from "../../repositories/account-login/interface";
 import { AccountRepositoryType } from "../../repositories/account/interface";
 import ILoginService from "../../service/login/interface";
+import IPasswordRecovery from "../../service/password-recovery/interface";
 import ISignupService from "../../service/signup/interface";
 import { StudentConfirmationPayload } from "../../types";
+import { generateRandomString } from "../../utils/code";
 import JWT from "../../utils/jwt";
 import AbstractBaseController from "../base/abstract";
 import IBaseController from "../base/interface";
@@ -113,6 +116,28 @@ export default class AccountController extends AbstractBaseController<AccountRep
         }
     }
 
+    updatePassword(accountModel: AccountModel): RequestHandler {
+        return async(req: Request, res: Response, next: NextFunction) => {
+            try {
+                const account: AuthAccountPayload | null = req['account'];
+                const data: Partial<AccountRepositoryType> = {};
+                data['hash_password'] = req.body.password;
+                delete data['password'];
+            
+                const result = await accountModel.updateById(account.id, data);
+
+                logger.debug(`updatePassword() result: `, result);
+
+                res.json({
+                    updated: result.status
+                })
+
+            } catch(err) {
+                next(err);
+            }
+        }
+    }
+
     deleteCurrent(accountModel: AccountModel): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
@@ -140,6 +165,33 @@ export default class AccountController extends AbstractBaseController<AccountRep
                 res.redirect(config.redirects.confirmation.success.url)
             } catch(err) {
                 res.redirect(config.redirects.confirmation.fail.url)
+                next(err);
+            }
+        }
+    }
+
+    sendRecoverPasswordCodeToEmail(passwordRecoveryService: IPasswordRecovery): RequestHandler {
+        return async(req: Request, res: Response, next: NextFunction) => {
+            try {
+                await passwordRecoveryService.sendPin(String(req.query['email']));
+                res.json( {
+                    message: 'Check Email'
+                })
+            } catch(err) {
+                next(err);
+            }
+        }
+    }
+
+    confirmRecoveryPasswordCode(passwordRecoveryService: IPasswordRecovery): RequestHandler {
+        return async(req: Request, res: Response, next: NextFunction) => {
+            try {
+                const result = await passwordRecoveryService.confirm(String(req.body['email']), String(req.body['pin']));
+                res.json( {
+                    data: result.data,
+                    success: result.success
+                })
+            } catch(err) {
                 next(err);
             }
         }

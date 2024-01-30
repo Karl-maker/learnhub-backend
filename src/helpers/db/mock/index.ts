@@ -9,6 +9,7 @@ import { CourseRepositoryType } from '../../../repositories/course/interface';
 import { QuizRepositoryType } from '../../../repositories/quiz/interface';
 import { QuestionRepositoryType } from '../../../repositories/question/interface';
 import { TopicProgressionRepositoryType } from '../../../repositories/topic-progression/interface';
+import { PasswordRecoveryPinRepositoryType } from '../../../repositories/password-recovery-pin/interface';
 
 class MockDatabase {
   private static instance: MockDatabase;
@@ -23,6 +24,7 @@ class MockDatabase {
     quiz: QuizRepositoryType[];
     question: QuestionRepositoryType[];
     topic_progression: TopicProgressionRepositoryType[];
+    password_recovery_pin: PasswordRecoveryPinRepositoryType[];
   }
 
   private constructor() {
@@ -30,6 +32,7 @@ class MockDatabase {
         account: [],
         account_login: [],
         student: [],
+        password_recovery_pin: [],
         topic: [
           {
             id: "86cced8b-a0ad-46bd-a0c9-89b76a9a35a5",
