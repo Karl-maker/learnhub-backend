@@ -1,7 +1,7 @@
 import { QuizRepositoryType } from "../../repositories/quiz/interface";
 import AbstractBaseController from "../base/abstract";
 import IBaseController from "../base/interface";
-import IQuizGenerator from "../../service/quiz_generator/interface";
+import IQuizGenerator from "../../service/quiz-generator/interface";
 import { NextFunction, RequestHandler, Request, Response } from "express";
 import { AuthAccountPayload } from "../../middlewares/authenticate/interface";
 import StudentModel from "../../models/student";

@@ -64,7 +64,7 @@ export default class LocalLogin implements ILoginService<JWTLoginCredentials, JW
                 iss: config.token.iss
             }
 
-            const access_token = this.accessJwt.create<RefreshAccountPayload>(payloadAccess, '1d');
+            const access_token = this.accessJwt.create<AccessAccountPayload>(payloadAccess, '1d');
             const refresh_token = this.refreshJwt.create<RefreshAccountPayload>(payloadRefresh, '30d');
             
             return {
