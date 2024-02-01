@@ -38,11 +38,12 @@ export default class PasswordRecovery implements IPasswordRecovery {
             await this.passwordRecoveryPinRepository.create({
                 account_id: account.id,
                 code: randomCode,
-                expires_at: new Date(currentDate.getTime() + expiration_in_minutes * 60000)
+                expires_at: new Date(currentDate.getTime() + expiration_in_minutes * 60000),
+                confirmed: false
             });
 
             const context: Context<AccountRecoveryPinContext> = {
-                pin: randomCode,
+                pin: randomCode.split('').join(' '),
                 expires_in: `${expiration_in_minutes} minutes`,
                 name: account.first_name
             }
@@ -74,11 +75,10 @@ export default class PasswordRecovery implements IPasswordRecovery {
             const account = await this.accountModel.findOne({ email });
             const recovery = await this.passwordRecoveryPinRepository.find({
                 account_id: account.id,
-                code: pin
             }, {
                 sort: {
                     field: 'created_at',
-                    direction: 'asc'
+                    direction: 'desc'
                 },
                 pagination: {
                     page: 1,
@@ -87,10 +87,21 @@ export default class PasswordRecovery implements IPasswordRecovery {
             });
 
             if(recovery.amount < 1) throw new NotFoundError('Not Found');
+            if(recovery.data[0].confirmed) throw new NotFoundError('Not Found');
+            if(pin !== recovery.data[0].code) throw new NotFoundError('Not Found');
+            if(recovery.amount < 1) throw new NotFoundError('Not Found');
 
             const recoveryData = recovery.data[0];
 
             if(hasTimePassedSinceExpiration(recoveryData.expires_at, expiration_in_minutes)) throw new UnauthorizedError('Code has expired');
+
+            await this.passwordRecoveryPinRepository.update({
+                account_id: account.id,
+                code: pin,
+                confirmed: false
+            }, {
+                confirmed: true
+            })
 
             const token = this.jwt.create<AccessAccountPayload>({
                 iss: config.token.iss,
@@ -98,7 +109,7 @@ export default class PasswordRecovery implements IPasswordRecovery {
                     id: account.id,
                     role: account.type
                 }
-            }, '10m');
+            }, 60000 * 10);
 
             return {
                 success: true,

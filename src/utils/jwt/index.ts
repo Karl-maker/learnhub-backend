@@ -15,7 +15,7 @@ export default class JWT {
         this.public_key = public_key;
     }
 
-    create<T>(payload: Payload<T>, expires: string): string {
+    create<T>(payload: Payload<T>, expires: string | number): string {
         // Sign the token using the private key and set the expiration time
         const token = jwt.sign({ data: payload.data, iss: payload.iss }, this.private_key, { expiresIn: expires });
         return token;
