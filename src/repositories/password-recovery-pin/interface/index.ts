@@ -6,4 +6,5 @@ export type PasswordRecoveryPinRepositoryType = RepositoryDatabaseBaseType & {
     account_id: string;
     code: string;
     expires_at: Date;
+    confirmed: boolean;
 }
