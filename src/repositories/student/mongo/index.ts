@@ -7,6 +7,8 @@ export class StudentMongoRepository extends Repository.mongo<StudentRepositoryTy
     constructor(connection: Connection) {
       super(connection.model<StudentRepositoryType & Document>('Student', new Schema({
         account_id: { type: String },
+        username: { type: String },
+        display_name: { type: String },
         school: { 
           name: { type: String },
         },
