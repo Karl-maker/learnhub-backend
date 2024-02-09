@@ -18,6 +18,7 @@ import topic_progression from "./routes/topic-progression"
 import content from "./routes/content";
 import event from "./events/handlers";
 import path from "path";
+import cors from "cors";
 
 const app = express();
 const port = config.port;
@@ -36,6 +37,7 @@ const fileRepositoryPath = path.resolve(__dirname, `../${config.fs.bucket}`);
     // });
 
     server.app.use(express.json())
+    server.app.use(cors())
     server.app.use(config.fs.route, express.static(fileRepositoryPath));
     server.app.use(`/api/v1`,
       account.v1(server),
