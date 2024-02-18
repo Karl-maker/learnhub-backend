@@ -33,7 +33,7 @@ const v1 = (server: IServer): express.Router => {
     const retrieveTokenBearer = new RetrieveBearerTokenFromRequest();
 
     server.router.post(`${ROUTE}`, localAuthentication.auth('student', retrieveTokenBearer), studentController.createCurrent(studentModel));
-    server.router.get(`${ROUTE}`, localAuthentication.auth('student', retrieveTokenBearer), studentController.getCurrent(studentModel));
+    server.router.get(`${ROUTE}`, studentController.getCurrent(studentModel));
     server.router.get(`${ROUTE}/:student_id`, studentController.findById(studentModel));
     server.router.patch(`${ROUTE}`, localAuthentication.auth('student', retrieveTokenBearer), studentController.updateCurrent(studentModel));
     server.router.post(`${ROUTE}/upload-profile-picture`, localAuthentication.auth('student', retrieveTokenBearer), upload.single('profile-picture'), studentController.uploadProfilePicture(studentModel, uploadService));
