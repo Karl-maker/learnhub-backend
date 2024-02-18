@@ -23,8 +23,8 @@ const v1 = (server: IServer): express.Router => {
     const retrieveTokenBearer = new RetrieveBearerTokenFromRequest();
 
     server.router.post(`${ROUTE}`, localAuthentication.auth('administrator', retrieveTokenBearer), subjectController.create(subjectModel));
-    server.router.get(`${ROUTE}`, localAuthentication.auth('any', retrieveTokenBearer), subjectController.findAll(subjectModel));
-    server.router.get(`${ROUTE}/:subject_id`, localAuthentication.auth('any', retrieveTokenBearer), subjectController.findById(subjectModel));
+    server.router.get(`${ROUTE}`, subjectController.findAll(subjectModel));
+    server.router.get(`${ROUTE}/:subject_id`, subjectController.findById(subjectModel));
     server.router.patch(`${ROUTE}/:subject_id`, localAuthentication.auth('administrator', retrieveTokenBearer), subjectController.updateById(subjectModel));
     server.router.delete(`${ROUTE}/:subject_id`, localAuthentication.auth('administrator', retrieveTokenBearer), subjectController.deleteById(subjectModel));
 
