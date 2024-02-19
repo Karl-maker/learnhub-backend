@@ -11,8 +11,8 @@ export type StudentRepositoryType = RepositoryDatabaseBaseType & {
     };
     location?: {
         country: string;
-        district: string;
     };
+    birth_of_date?: Date;
     grade?: number;
     profile?: {
         picture?: {
