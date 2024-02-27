@@ -1,11 +1,12 @@
-import { Document, Connection } from "mongoose";
+import mongoose, { Document, Connection } from "mongoose";
 import { Schema } from "mongoose";
 import { AccountRepositoryType } from "../interface";
 import Repository from "../../base";
 
 export class AccountMongoRepository extends Repository.mongo<AccountRepositoryType> {
-    constructor(connection: Connection) {
-      super(connection.model<AccountRepositoryType & Document>('Account', new Schema({
+    constructor() {
+      super(mongoose.model<AccountRepositoryType & Document>('Account', new Schema({
+        id: { type: String },
         first_name: { type: String },
         last_name: { type: String },
         email: { type: String },

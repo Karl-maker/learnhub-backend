@@ -19,51 +19,53 @@ import content from "./routes/content";
 import event from "./events/handlers";
 import path from "path";
 import cors from "cors";
+import mongoose from "mongoose";
 
 const app = express();
 const port = config.port;
 const server: IServer = new ExpressServer(app);
-const mongo = MongoDBConnector;
 const mongo_db_uri = config.database[config.environment].uri;
 const fileRepositoryPath = path.resolve(__dirname, `../${config.fs.bucket}`);
 
-(async() => {
-    // await mongo.connect(mongo_db_uri, {
-    //   dbName: config.database[config.environment].name,
-    //   user: config.database[config.environment].user,
-    //   pass: config.database[config.environment].password, 
-    //   retryWrites: true, 
-    //   w: "majority" 
-    // });
-
-    server.app.use(express.json())
-    server.app.use(cors())
-    server.app.use(config.fs.route, express.static(fileRepositoryPath));
-    server.app.use(`/api/v1`,
-      account.v1(server),
-      account_login.v1(server),
-      student.v1(server),
-      quiz.v1(server),
-      question.v1(server),
-      course.v1(server),
-      subject.v1(server),
-      subsubject.v1(server),
-      topic.v1(server),
-      topic_progression.v1(server),
-      content.v1(server),
-
-    )
-    server.app.use(error404)
-    server.app.use(errorHandler);
-
-    // event handlers
-    event.account();
-    event.quiz();
-    event.student();
-
-    // start the server
-    server.start(port, () => {
-      logger.info(`service running on port: ${port}`)
-    });
+(() => {
+    mongoose.connect(mongo_db_uri, {
+      dbName: config.database[config.environment].name,
+      user: config.database[config.environment].user,
+      pass: config.database[config.environment].password,
+      retryWrites: true, 
+      w: "majority" 
+    }).then(() => {
+      
+      server.app.use(express.json())
+      server.app.use(cors())
+      server.app.use(config.fs.route, express.static(fileRepositoryPath));
+      server.app.use(`/api/v1`,
+        account.v1(server),
+        account_login.v1(server),
+        student.v1(server),
+        quiz.v1(server),
+        question.v1(server),
+        course.v1(server),
+        subject.v1(server),
+        subsubject.v1(server),
+        topic.v1(server),
+        topic_progression.v1(server),
+        content.v1(server),
+      )
+      server.app.use(error404)
+      server.app.use(errorHandler);
+  
+      // event handlers
+      event.account();
+      event.quiz();
+      event.student();
+  
+      // start the server
+      server.start(port, () => {
+        logger.info(`service running on port: ${port}`)
+      });
+    }).catch((err) => {
+      logger.error(err)
+    })
 
 })();

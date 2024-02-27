@@ -1,6 +1,4 @@
 import { RequestHandler, Request, Response, NextFunction } from "express";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import { FindManyOptions, IBaseModel } from "../../../models/base/interface";
 import IBaseController from "../interface";
 import { EventCreatePayload, EventDeleteByIdPayload, EventUpdateByIdPayload, baseEvent } from "../../../events/definitions/base";
@@ -12,7 +10,7 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
     constructor(id: string) {
         this.id = id;
     }
-    findById(model: IBaseModel<T>): RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
+    findById(model: IBaseModel<T>): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = await model.findById(req.params[this.id]);
@@ -24,7 +22,7 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
             }
         }
     }
-    findAll(model: IBaseModel<T>): RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
+    findAll(model: IBaseModel<T>): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
 
@@ -52,7 +50,7 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
             }
         }
     }
-    create(model: IBaseModel<T>): RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
+    create(model: IBaseModel<T>): RequestHandler{
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = await model.create(req.body);
@@ -66,7 +64,7 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
             }
         }
     }
-    updateById(model: IBaseModel<T>): RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
+    updateById(model: IBaseModel<T>): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = await model.updateById(req.params[this.id], req.body);
@@ -80,7 +78,7 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
             }
         }
     }
-    updateMany(model: IBaseModel<T>): RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
+    updateMany(model: IBaseModel<T>): RequestHandler {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
                 // Initialize the response array
@@ -108,7 +106,7 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
             }
         }
     } 
-    deleteById(model: IBaseModel<T>): RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
+    deleteById(model: IBaseModel<T>): RequestHandler {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const data = await model.deleteById(req.params[this.id]);
@@ -122,7 +120,7 @@ export default abstract class AbstractBaseController<T> implements IBaseControll
             }
         }
     }
-    deleteMany(model: IBaseModel<T>): RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
+    deleteMany(model: IBaseModel<T>): RequestHandler {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
                 // Initialize the response array

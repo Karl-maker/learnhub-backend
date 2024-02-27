@@ -1,4 +1,4 @@
-import { NextFunction, RequestHandler, Request, Response } from "express";
+import { NextFunction, RequestHandler, Request, Response, Express } from "express";
 import { studentEvent, StudentEventCreatePayload, StudentEventUpdateProfilePicturePayload } from "../../events/definitions/student";
 import { StudentRepositoryType } from "../../repositories/student/interface";
 import AbstractBaseController from "../base/abstract";
@@ -85,11 +85,11 @@ export default class StudentController extends AbstractBaseController<StudentRep
         }
     }
 
-    uploadProfilePicture(studentService: StudentModel, uploadService: IUpload): RequestHandler {
+    uploadProfilePicture(studentService: StudentModel, uploadService: IUpload) {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const account: AuthAccountPayload | null = req['account'];
-                const data: Express.Multer.File = req.file;
+                const data = req['file'];
                 uploadService.upload(data, (data: UploadCallback) => {
                     (async () => {                        
                         const student = await studentService.findOne({ account_id: account.id });

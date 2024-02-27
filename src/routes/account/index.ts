@@ -15,7 +15,7 @@ import express from 'express';
 const ROUTE = '/account';
 const v1 = (server: IServer): express.Router => {
     const accountController = new AccountController();
-    const accountRepository: IAccountRepository = AccountRepository.mock;
+    const accountRepository: IAccountRepository = AccountRepository.mongo;
     const accountModel = new AccountModel(accountRepository);
     /**
      * @todo use proper keys from config
