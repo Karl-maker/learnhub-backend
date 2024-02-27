@@ -1,6 +1,4 @@
 import { RequestHandler, Request, Response, NextFunction } from "express";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import { BlobRepositoryType, IBlobRepository } from "../../repositories/blob/interface";
 import AbstractBaseController from "../base/abstract";
 import IBaseController from "../base/interface";
@@ -12,7 +10,7 @@ export default class ContentController extends AbstractBaseController<BlobReposi
         super('content_id');
     }
 
-    create(model: ContentModel): RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
+    create(model: ContentModel): RequestHandler{
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
                 const file: Express.Multer.File = req.file;

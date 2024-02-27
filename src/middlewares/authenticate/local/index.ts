@@ -1,6 +1,4 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import AccountModel from "../../../models/account";
 import Authenticate, { AuthAccountPayload } from "../interface";
 import JWT, { Payload } from "../../../utils/jwt";
@@ -15,7 +13,7 @@ export default class LocalAuthentication implements Authenticate {
     constructor(jwt: JWT) {
         this.jwt = jwt;
     }
-    auth(role: AccountRoles | 'any' = 'any', retrieveToken: RetrieveTokenFromRequest): RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
+    auth(role: AccountRoles | 'any' = 'any', retrieveToken: RetrieveTokenFromRequest): RequestHandler {
         return async (req: Request, res: Response, next: NextFunction) => {
             try{
                 const token = retrieveToken.retrieve(req);
