@@ -5,7 +5,7 @@ import { QuizMongoRepository } from "./mongo";
 
 const QuizRepository = {
     mock: new QuizMockRepository(MockDatabase.getInstance().database.quiz),
-    // mongo: new QuizMongoRepository(MongoDBConnector.connection)
+    mongo: new QuizMongoRepository()
 }
 
 export default QuizRepository;

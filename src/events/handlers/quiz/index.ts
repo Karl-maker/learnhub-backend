@@ -22,8 +22,8 @@ export default () => {
             try {
                 if(!payload.data.request.complete) return;
 
-                const student = await new StudentModel(StudentRepository.mock).findById(payload.data.response.student_id);
-                const account = await new AccountModel(AccountRepository.mock).findById(student.account_id);
+                const student = await new StudentModel(StudentRepository.mongo).findById(payload.data.response.student_id);
+                const account = await new AccountModel(AccountRepository.mongo).findById(student.account_id);
 
                 let score: number = payload.data.request.score ? payload.data.request.score : undefined;
                 let total_score: number = 0;

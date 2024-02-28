@@ -5,7 +5,7 @@ import { StudentMongoRepository } from "./mongo";
 
 const StudentRepository = {
     mock: new StudentMockRepository(MockDatabase.getInstance().database.student),
-    // mongo: new StudentMongoRepository(MongoDBConnector.connection)
+    mongo: new StudentMongoRepository()
 }
 
 export default StudentRepository;

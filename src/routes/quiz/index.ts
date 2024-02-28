@@ -21,10 +21,10 @@ import express from 'express';
 const ROUTE = '/quiz';
 const v1 = (server: IServer): express.Router => {
     const quizController = new QuizController();
-    const quizRepository: IQuizRepository = QuizRepository.mock;
+    const quizRepository: IQuizRepository = QuizRepository.mongo;
     const quizModel = new QuizModel(quizRepository);
     const questionRepository: IQuestionRepository = QuestionRepository.mock;
-    const studentRepository: IStudentRepository = StudentRepository.mock;
+    const studentRepository: IStudentRepository = StudentRepository.mongo;
     const studentModel = new StudentModel(studentRepository)
     const quizGenerator: IQuizGenerator = new BasicQuizGenerator(quizRepository, questionRepository);
     /**

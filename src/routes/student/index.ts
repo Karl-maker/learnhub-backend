@@ -21,7 +21,7 @@ const upload = multer({ storage: storage });
 
 const v1 = (server: IServer): express.Router => {
     const studentController = new StudentController();
-    const studentRepository: IStudentRepository = StudentRepository.mock;
+    const studentRepository: IStudentRepository = StudentRepository.mongo;
     const studentModel = new StudentModel(studentRepository);
     const fileRepository: IBlobRepository = BlobRepository.fs;
     const uploadService: IUpload = new Upload(fileRepository)

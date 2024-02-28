@@ -1,11 +1,12 @@
-import { Document, Connection } from "mongoose";
+import mongoose, { Document, Connection } from "mongoose";
 import { Schema } from "mongoose";
 import { QuizRepositoryType } from "../interface";
 import Repository from "../../base";
 
 export class QuizMongoRepository extends Repository.mongo<QuizRepositoryType> {
-    constructor(connection: Connection) {
-      super(connection.model<QuizRepositoryType & Document>('Quiz', new Schema({
+    constructor() {
+      super(mongoose.model<QuizRepositoryType & Document>('Quiz', new Schema({
+        id: { type: String },
         student_id: { type: String },
         questions: [
             {
@@ -29,6 +30,7 @@ export class QuizMongoRepository extends Repository.mongo<QuizRepositoryType> {
         toJSON: {
             transform: function (doc, ret) {
               ret.id = ret._id;
+              doc.id = ret._id;
               delete ret._id;
               delete ret.__v;
             }
