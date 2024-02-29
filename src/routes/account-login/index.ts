@@ -13,7 +13,7 @@ import express from 'express';
 const ROUTE = '/account-login';
 const v1 = (server: IServer): express.Router => {
     const accountLoginController = new AccountLoginController();
-    const accountLoginRepository: IAccountLoginRepository = AccountLoginRepository.mock
+    const accountLoginRepository: IAccountLoginRepository = AccountLoginRepository.mongo
     const accountLoginModel = new AccountLoginModel(accountLoginRepository);
     /**
      * @todo use proper keys from config

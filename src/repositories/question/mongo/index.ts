@@ -1,11 +1,12 @@
-import { Document, Connection } from "mongoose";
+import mongoose, { Document, Connection } from "mongoose";
 import { Schema } from "mongoose";
 import { QuestionRepositoryType } from "../interface";
 import Repository from "../../base";
 
 export class QuestionMongoRepository extends Repository.mongo<QuestionRepositoryType> {
-    constructor(connection: Connection) {
-      super(connection.model<QuestionRepositoryType & Document>('Question', new Schema({
+    constructor() {
+      super(mongoose.model<QuestionRepositoryType & Document>('Question', new Schema({
+        id: { type: String },
         name: { type: String },
         description: { type: String },
         tier_level: { type: Number },
@@ -44,6 +45,7 @@ export class QuestionMongoRepository extends Repository.mongo<QuestionRepository
         toJSON: {
             transform: function (doc, ret) {
               ret.id = ret._id;
+              doc.id = ret._id;
               delete ret._id;
               delete ret.__v;
             }

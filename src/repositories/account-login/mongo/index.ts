@@ -1,12 +1,13 @@
-import { Document, Connection } from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { Schema } from "mongoose";
 import { AccountLoginRepositoryType } from "../interface";
 import Repository from "../../base";
 
 export class AccountLoginMongoRepository extends Repository.mongo<AccountLoginRepositoryType> {
-    constructor(connection: Connection) {
-      super(connection.model<AccountLoginRepositoryType & Document>('AccountLogin', new Schema({
-        account_id: { type: String, required: true },
+    constructor() {
+      super(mongoose.model<AccountLoginRepositoryType & Document>('AccountLogin', new Schema({
+        id: { type: String },
+        account_id: { type: String },
         method: { type: String },
         ip_address: { type: String },
         origin: { type: String },
@@ -29,6 +30,7 @@ export class AccountLoginMongoRepository extends Repository.mongo<AccountLoginRe
         toJSON: {
             transform: function (doc, ret) {
               ret.id = ret._id;
+              doc.id = ret._id;
               delete ret._id;
               delete ret.__v;
             }

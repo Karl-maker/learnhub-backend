@@ -20,8 +20,8 @@ export default () => {
     event.subscribe(accountEvent.topics.AccountLogin, (payload: AccountEventLoginPayload) => {
         (async ()=> {
             try {
-                const accountLoginRepository = AccountLoginRepository.mock;
-                const accountRepository = AccountRepository.mock;
+                const accountLoginRepository = AccountLoginRepository.mongo;
+                const accountRepository = AccountRepository.mongo;
                 const accountLoginModel = new AccountLoginModel(accountLoginRepository);
                 const accountModel = new AccountModel(accountRepository);
     
@@ -29,6 +29,8 @@ export default () => {
     
                 if(payload.account.email) account = await accountModel.findOne({ email: payload.account.email });
                 else if(payload.account.mobile) account = await accountModel.findOne({ mobile: payload.account.mobile });
+
+                logger.debug(`${accountEvent.topics.AccountLogin}: `, account)
     
                 await accountLoginModel.create({
                     method: payload.method,
