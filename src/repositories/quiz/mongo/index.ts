@@ -13,7 +13,7 @@ export class QuizMongoRepository extends Repository.mongo<QuizRepositoryType> {
                 id: { type: String },
                 possible_marks: { type: Number },
                 earned_marks: { type: Number },
-                complete: { type: Boolean },
+                complete: { type: Boolean, default: false },
                 message: { type: String },
                 tier_level: { type: Number }
             }
@@ -30,9 +30,9 @@ export class QuizMongoRepository extends Repository.mongo<QuizRepositoryType> {
         toJSON: {
             transform: function (doc, ret) {
               ret.id = ret._id;
-              doc.id = ret._id;
               delete ret._id;
               delete ret.__v;
+              return
             }
         }
       }

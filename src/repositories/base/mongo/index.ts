@@ -31,8 +31,10 @@ export abstract class MongoRepository<T> implements IRepository<T> {
 
   async create(data: T): Promise<T> {
     const createdData = await this.model.create(data);
-    return createdData.toObject() as T;
+    const updatedData = await this.model.findByIdAndUpdate(createdData._id, { id: createdData._id }, { new: true })
+    return updatedData.toObject() as T;
   }
+
 
   async update(where: T, data: T): Promise<RepositoryUpdateResult> {
     const result = await this.model.findOneAndUpdate(

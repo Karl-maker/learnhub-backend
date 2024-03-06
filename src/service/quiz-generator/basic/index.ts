@@ -7,17 +7,18 @@ import QuizRepository from "../../../repositories/quiz";
 import logger from "../../../helpers/logger";
 
 export default class BasicQuizGenerator implements IQuizGenerator {
-    quizRepository: IQuizRepository;
+    quizModel: QuizModel;
     questionRepository: IQuestionRepository;
 
-    constructor(quizRepository: IQuizRepository, questionRepository: IQuestionRepository) {
+    constructor(quizModel: QuizModel, questionRepository: IQuestionRepository) {
         this.questionRepository = questionRepository;
-        this.quizRepository = quizRepository;
+        this.quizModel = quizModel;
     }
 
     async generate(student_id: string, topic?: string, no_of_questions: number = 5, difficulty: number = 1, range = 5): Promise<QuizRepositoryType> {
         try {
             
+            logger.debug(`Enter generate()`);
             const where: Partial<QuestionRepositoryType> | {} = {};
             if(topic) where['topic'] = topic;
             const questions = await this.questionRepository.findByDifficulty(where, {
@@ -39,12 +40,14 @@ export default class BasicQuizGenerator implements IQuizGenerator {
                 })
             });
 
-            const quiz = await this.quizRepository.create({
+            const quiz = await this.quizModel.create({
                 student_id,
                 questions: quiz_questions,
                 type: 'generated',
                 complete: false
             });
+
+            logger.debug(`Generate Quiz: `, quiz);
 
             return quiz;
 
