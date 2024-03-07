@@ -58,7 +58,7 @@ const v1 = (server: IServer): express.Router => {
     server.router.post(`${ROUTE}/update-password`, recoveryAuthentication.auth('any', retrieveTokenBearer), accountController.updatePassword(accountModel));
 
     server.router.post(`${ROUTE}`, localAuthentication.auth('administrator', retrieveTokenBearer), accountController.create(accountModel));
-    server.router.get(`${ROUTE}/:account_id`, localAuthentication.auth('administrator', retrieveTokenBearer), accountController.findById(accountModel));
+    server.router.get(`${ROUTE}/:account_id`, accountController.findById(accountModel));
     server.router.patch(`${ROUTE}/:account_id`, localAuthentication.auth('administrator', retrieveTokenBearer), accountController.updateById(accountModel));
     server.router.delete(`${ROUTE}/:account_id`, localAuthentication.auth('administrator', retrieveTokenBearer), accountController.deleteById(accountModel));
 
