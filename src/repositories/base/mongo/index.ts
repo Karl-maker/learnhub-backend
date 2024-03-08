@@ -1,5 +1,6 @@
 import mongoose, { Document, FilterQuery, Model } from 'mongoose';
 import { IRepository, RepositoryDatabaseBaseType, RepositoryDeleteResult, RepositoryFindOptions, RepositoryFindResult, RepositoryUpdateResult } from '../interface';
+import logger from '../../../helpers/logger';
 
 export abstract class MongoRepository<T> implements IRepository<T> {
   private readonly model: Model<Document & T>;
@@ -9,6 +10,7 @@ export abstract class MongoRepository<T> implements IRepository<T> {
   }
 
   async find(where: T, options?: RepositoryFindOptions<T>): Promise<RepositoryFindResult<T>> {
+    logger.debug(`Repository.find(): `, { where });
     const query = this.model.find(where as FilterQuery<T>);
 
     // Apply sorting if specified
@@ -25,7 +27,7 @@ export abstract class MongoRepository<T> implements IRepository<T> {
 
     const data = await query.exec();
     const amount = await this.model.countDocuments(where as FilterQuery<T>);
-
+    logger.debug(`Repository.find().result: `, { data });
     return { data, amount };
   }
 
@@ -37,14 +39,17 @@ export abstract class MongoRepository<T> implements IRepository<T> {
 
 
   async update(where: T, data: T): Promise<RepositoryUpdateResult> {
+    logger.debug(`Repository.update(): `, { where, data });
     const result = await this.model.findOneAndUpdate(
-      where as mongoose.FilterQuery<T>,
-      { $set: data } as any,
+      where,
+      data,
       { new: true } // Setting `new` to true returns the modified document instead of the original one
     );
   
     // Check if the document was modified
     const mutated = result !== null ? 1 : 0;
+
+    logger.debug(`Repository.update().results: `, mutated);
   
     return { mutated };
   }

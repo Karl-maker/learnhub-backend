@@ -17,7 +17,14 @@ export class StudentMongoRepository extends Repository.mongo<StudentRepositoryTy
           country: { type: String, required: false },
           district: { type: String, required: false },
         },
-        grade: { type: Number }
+        grade: { type: Number },
+        profile: {
+          picture: {
+              id: { type: String },
+              ext: { type: String },
+              url: { type: String },
+          }
+        }
       }, {
         timestamps: { 
             updatedAt: 'updated_at', 
