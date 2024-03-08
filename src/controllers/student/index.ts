@@ -88,10 +88,13 @@ export default class StudentController extends AbstractBaseController<StudentRep
     uploadProfilePicture(studentService: StudentModel, uploadService: IUpload) {
         return async(req: Request, res: Response, next: NextFunction) => {
             try {
+                logger.debug(`uploadProfilePicture()`)
                 const account: AuthAccountPayload | null = req['account'];
                 const data = req['file'];
+                logger.debug(`uploadProfilePicture().account`, account)     
                 uploadService.upload(data, (data: UploadCallback) => {
-                    (async () => {                        
+                    (async () => { 
+                        logger.debug(`UploadCallback()`, data)                       
                         const student = await studentService.findOne({ account_id: account.id });
                         let old_data: { url: string; id: string; ext: string; };
 
@@ -99,9 +102,9 @@ export default class StudentController extends AbstractBaseController<StudentRep
 
                         if(doesStudentHaveProfileImage) {
                             old_data = {
-                                url: student.profile.picture.url,
-                                id: student.profile.picture.id,
-                                ext: student.profile.picture.ext
+                                url: student.profile?.picture?.url || "",
+                                id: student.profile?.picture?.id || "",
+                                ext: student.profile?.picture?.ext || ""
                             }
                         }
 
@@ -109,9 +112,7 @@ export default class StudentController extends AbstractBaseController<StudentRep
                             throw new InternalServerError('No student found');
                         }
 
-                        await studentService.updateOne({
-                            account_id: account.id 
-                        }, {
+                        logger.debug(`studentService.updateOne()`, {
                             profile: {
                                 picture: {
                                     url: data.location,
@@ -120,6 +121,18 @@ export default class StudentController extends AbstractBaseController<StudentRep
                                 }
                             }
                         });
+
+                        const updatedStudent = await studentService.updateById(student.id, {
+                            profile: {
+                                picture: {
+                                    url: data.location,
+                                    id: data.key,
+                                    ext: data.ext
+                                }
+                            }
+                        });
+
+                        logger.debug(`Updated Student`, updatedStudent)
 
                         if(doesStudentHaveProfileImage) {
                             const payload: StudentEventUpdateProfilePicturePayload = {

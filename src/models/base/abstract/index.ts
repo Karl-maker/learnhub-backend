@@ -1,3 +1,4 @@
+import logger from "../../../helpers/logger";
 import { IRepository } from "../../../repositories/base/interface";
 import { FindManyOptions, IBaseModel, ModelDeleteByIdResult, ModelDeleteManyResult, ModelDeleteOneResult, ModelFindManyResult, ModelUpdateByIdResult, ModelUpdateManyResult } from "../interface";
 
@@ -82,6 +83,10 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
     async updateById(id: string, update: Partial<T>): Promise<ModelUpdateByIdResult<T>> {
         try {
             const where: T = { id } as unknown as T;
+            logger.debug(`Model.updateById():`, {
+                where,
+                update
+            })
             const result = await this.repository.update(where, update);
             const data = await this.repository.find(where, {
                 sort: {
@@ -103,6 +108,10 @@ export abstract class AbstractBaseModel<T> implements IBaseModel<T> {
     }
     async updateOne(where: Partial<T>, update: Partial<T>): Promise<T> {
         try {
+            logger.debug(`Model.updateById():`, {
+                where,
+                update
+            })
             await this.repository.update(where, update);
             const data = await this.repository.find(where, {
                 sort: {
