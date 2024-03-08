@@ -25,11 +25,11 @@ module.exports = async function (
 
     transporter.use('compile', handlebars({
       viewEngine: {
-        layoutsDir: path.resolve(__dirname, '../../../../templates/email/layouts'),
-        partialsDir: path.resolve(__dirname, '../../../../templates/email/partials'),
+        layoutsDir: path.resolve(__dirname, '../../../../../templates/email/layouts'),
+        partialsDir: path.resolve(__dirname, '../../../../../templates/email/partials'),
         defaultLayout: 'main',
       },
-      viewPath: path.resolve(__dirname, '../../../../templates/email'),
+      viewPath: path.resolve(__dirname, '../../../../../templates/email'),
     }));
 
     const mailOptions = {
