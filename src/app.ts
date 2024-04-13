@@ -37,7 +37,9 @@ const fileRepositoryPath = path.resolve(__dirname, `../${config.fs.bucket}`);
     }).then(() => {
       
       server.app.use(express.json())
-      server.app.use(cors())
+      server.app.use(cors({
+        origin: '*'
+      }));
       server.app.use(config.fs.route, express.static(fileRepositoryPath));
       server.app.use(`/api/v1`,
         account.v1(server),
