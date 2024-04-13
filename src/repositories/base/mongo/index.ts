@@ -11,7 +11,7 @@ export abstract class MongoRepository<T> implements IRepository<T> {
 
   async find(where: T, options?: RepositoryFindOptions<T>): Promise<RepositoryFindResult<T>> {
     logger.debug(`Repository.find(): `, { where });
-    const query = this.model.find(where as FilterQuery<T>);
+    const query = this.model.find(where as FilterQuery<any>);
 
     // Apply sorting if specified
     if (options?.sort) {
@@ -26,7 +26,7 @@ export abstract class MongoRepository<T> implements IRepository<T> {
     }
 
     const data = await query.exec();
-    const amount = await this.model.countDocuments(where as FilterQuery<T>);
+    const amount = await this.model.countDocuments(where as FilterQuery<any>);
     logger.debug(`Repository.find().result: `, { data });
     return { data, amount };
   }
@@ -55,7 +55,7 @@ export abstract class MongoRepository<T> implements IRepository<T> {
   }
 
   async delete(where: T): Promise<RepositoryDeleteResult> {
-    const result = await this.model.deleteMany(where as FilterQuery<T>);
+    const result = await this.model.deleteMany(where as FilterQuery<any>);
     return { deleted: result.deletedCount || 0 };
   }
 }
